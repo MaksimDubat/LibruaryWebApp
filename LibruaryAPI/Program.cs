@@ -1,4 +1,3 @@
-
 namespace LibruaryAPI
 {
     public class Program
