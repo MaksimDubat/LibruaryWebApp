@@ -12,7 +12,13 @@ namespace LibruaryAPI.Domain.Entities
         /// Идентификатор роли.
         /// </summary>
         public int RoleId { get; set; }
+        /// <summary>
+        /// Роль.
+        /// </summary>
         public UserRole RoleName { get; set; } = UserRole.User;
+        /// <summary>
+        /// Пользователи.
+        /// </summary>
         public ICollection<AppUsersRoles> User { get; set; } = new List<AppUsersRoles>();
     }
 }

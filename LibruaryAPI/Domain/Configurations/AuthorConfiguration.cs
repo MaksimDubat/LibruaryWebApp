@@ -20,6 +20,12 @@ namespace LibruaryAPI.Domain.Configurations
             builder.Property(x => x.Country)
                 .HasMaxLength(128);
             builder.Property(x => x.BirthDate);
+
+            builder
+                .HasMany(x => x.Books)
+                .WithOne(x  => x.Author)
+                .HasForeignKey(x => x.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

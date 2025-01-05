@@ -33,5 +33,9 @@
         /// Количество дней хранения.
         /// </summary>
         public int StorageDays { get; set; }
+        /// <summary>
+        /// Статус в корзине.
+        /// </summary>
+        public string CartStatus { get; set; } = "Добавлено!";
     }
 }

@@ -25,6 +25,9 @@
         /// Дата рождения автора.
         /// </summary>
         public DateTime BirthDate { get; set; }
+        /// <summary>
+        /// Коллекция книг.
+        /// </summary>
         public ICollection<Book> Books { get; set; } = new List<Book>();
 
     }

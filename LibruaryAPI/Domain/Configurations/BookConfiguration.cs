@@ -20,7 +20,10 @@ namespace LibruaryAPI.Domain.Configurations
             builder.Property(x => x.Description)
                 .HasMaxLength(512);
             builder.Property(x => x.TakenAt);
-
+            builder.Property(x => x.IsAvaiable)
+                .HasDefaultValue(true);
+            builder.Property(x => x.Image)
+                .HasMaxLength(512);
             builder.HasOne(x => x.Author)
                 .WithMany(x => x.Books)
                 .HasForeignKey(x => x.AuthorId)

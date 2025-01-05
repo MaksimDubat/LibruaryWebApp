@@ -34,6 +34,12 @@ namespace LibruaryAPI.Domain.Configurations
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
 
+            builder
+                .HasMany(x => x.Carts)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

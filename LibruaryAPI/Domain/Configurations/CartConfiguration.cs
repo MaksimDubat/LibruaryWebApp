@@ -15,7 +15,7 @@ namespace LibruaryAPI.Domain.Configurations
             builder.HasKey(x=> x.CartId);
 
             builder.HasOne(x=>x.User)
-                .WithMany()
+                .WithMany(x => x.Carts)
                 .HasForeignKey(x=>x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -30,6 +30,9 @@ namespace LibruaryAPI.Domain.Configurations
             builder.Property(x => x.StorageDays)
                 .IsRequired()
                 .HasDefaultValue(14);
+            builder.Property(x => x.CartStatus)
+                .HasMaxLength(50)
+                .IsRequired();
         }
     }
 }

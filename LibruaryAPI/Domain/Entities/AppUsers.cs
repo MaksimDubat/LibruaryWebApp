@@ -36,5 +36,9 @@ namespace LibruaryAPI.Domain.Entities
         /// Активен ли пользователь.
         /// </summary>
         public bool IsActive { get; set; } =true;
+        /// <summary>
+        /// Корзина.
+        /// </summary>
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
     }
 }

@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Infrastructure.DataBase;
+﻿using LibruaryAPI.Application.Services;
+using LibruaryAPI.Infrastructure.DataBase;
+using LibruaryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibruaryAPI.WebAPI.Registrations
@@ -14,6 +16,7 @@ namespace LibruaryAPI.WebAPI.Registrations
             services.AddDbContext<MutableDbContext>(options =>
                 options.UseNpgsql(connectionString)
             );
+
         }
     }
 }
