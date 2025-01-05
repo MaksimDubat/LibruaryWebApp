@@ -8,27 +8,24 @@
         /// <summary>
         /// Идентификатор книги.
         /// </summary>
-        public int Id { get; set; }
+        public int BookId { get; set; }
         /// <summary>
         /// Уникальный код, генерируемый для книги.
         /// </summary>
-        public string ISBN { get; set; } = string.Empty;
+        public required string ISBN { get; set; }
         /// <summary>
         /// Название книги.
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        public required string Title { get; set; }
         /// <summary>
         /// Описание книги.
         /// </summary>
-        public string Description { get; set; } = string.Empty;
-        /// <summary>
-        /// Автор книги.
-        /// </summary>
-        public string Author { get; set; } = string.Empty;
+        public required string Description { get; set; }
         /// <summary>
         /// Когда взяли книгу.
         /// </summary>
         public DateTime TakenAt { get; set; }
-
+        public int AuthorId { get; set; }
+        public required Author Author { get; set; } 
     }
 }

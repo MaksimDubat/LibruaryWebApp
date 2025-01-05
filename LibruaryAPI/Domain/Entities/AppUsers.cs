@@ -6,7 +6,7 @@ namespace LibruaryAPI.Domain.Entities
     /// <summary>
     /// Сущность для работы с пользователями.
     /// </summary>
-    public class AppUsers : IdentityUser<int>
+    public class AppUsers
     {
         /// <summary>
         /// Идентификатор пользователя.
@@ -15,19 +15,19 @@ namespace LibruaryAPI.Domain.Entities
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
         /// <summary>
         /// Email пользователя.
         /// </summary>
-        public string UserEmail { get; set; } = string.Empty;
+        public required string UserEmail { get; set; } 
         /// <summary>
         /// Пароль пользователя.
         /// </summary>
-        public string Password {  get; set; } = string.Empty;
+        public required string Password {  get; set; }
         /// <summary>
         /// Роль пользователя.
         /// </summary>
-        public UserRole Role { get; set; }
+        public ICollection<AppUsersRoles> Role { get; set; } = new List<AppUsersRoles>();
         /// <summary>
         /// Дата создания пользователя.
         /// </summary>
