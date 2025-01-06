@@ -10,6 +10,9 @@ using SixLabors.ImageSharp.Processing;
 
 namespace LibruaryAPI.Application.Services
 {
+    /// <summary>
+    /// Репозиторий по работе с книгами.
+    /// </summary>
     public class BookRepository : BaseRepository<Book>, IBookRepository
     {
         private readonly MutableDbContext _context;

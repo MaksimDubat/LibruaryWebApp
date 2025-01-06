@@ -4,6 +4,9 @@ using LibruaryAPI.Infrastructure.DataBase;
 
 namespace LibruaryAPI.Interfaces
 {
+    /// <summary>
+    /// Интерфейс по работе с книгами.
+    /// </summary>
     public interface IBookRepository : IBaseRepository<Book>
     {
         /// <summary>
