@@ -15,6 +15,7 @@ namespace LibruaryAPI.Infrastructure.DataBase
         public DbSet<AppUsersRoles> AppUsersRoles { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Author { get; set; }
+        public DbSet<Cart> Cart {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

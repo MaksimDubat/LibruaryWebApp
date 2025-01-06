@@ -43,6 +43,10 @@ namespace LibruaryAPI.Domain.Entities
         /// Изображение книги.
         /// </summary>
         public string? Image { get; set; }
+        /// <summary>
+        /// КОличество экземпляров.
+        /// </summary>
+        public int Amount { get; set; }
         private static string GenerateISBN()
         {
             var random = new Random();

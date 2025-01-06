@@ -17,6 +17,9 @@ namespace LibruaryAPI.WebAPI.Registrations
                 options.UseNpgsql(connectionString)
             );
 
+        services.AddScoped<IBookRepository, BookRepository>();
+
+        services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LibruaryRegistrations).Assembly));
         }
     }
 }

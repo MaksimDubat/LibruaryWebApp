@@ -26,6 +26,13 @@ namespace LibruaryAPI.Interfaces
         /// <param name="image"></param>
         /// <param name="cancellation"></param>
         Task<Book> UploadImageAsync(int bookId, IFormFile image, CancellationToken cancellation);
+        /// <summary>
+        /// Подтверждение выдачи.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <param name="cancellation"></param>
+        Task<bool> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation);
     }
    
 }

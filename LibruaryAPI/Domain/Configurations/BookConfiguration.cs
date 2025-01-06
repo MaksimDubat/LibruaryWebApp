@@ -24,6 +24,8 @@ namespace LibruaryAPI.Domain.Configurations
                 .HasDefaultValue(true);
             builder.Property(x => x.Image)
                 .HasMaxLength(512);
+            builder.Property(x => x.Amount)
+                .IsRequired();
             builder.HasOne(x => x.Author)
                 .WithMany(x => x.Books)
                 .HasForeignKey(x => x.AuthorId)
