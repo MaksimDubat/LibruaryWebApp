@@ -72,4 +72,4 @@ namespace LibruaryAPI.Domain.Entities
         }
     }
 }
-}
+

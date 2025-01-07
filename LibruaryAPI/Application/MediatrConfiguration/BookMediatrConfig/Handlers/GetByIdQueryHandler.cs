@@ -17,7 +17,12 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         }
         public async Task<Book> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _bookRepository.GetAsync(request.Id, cancellationToken);
+            var book = await _bookRepository.GetAsync(request.Id, cancellationToken);
+            if (book == null)
+            {
+                throw new ArgumentNullException("invalid");
+            }
+            return book;
         }
     }
 }

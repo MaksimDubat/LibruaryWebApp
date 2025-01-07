@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibruaryAPI.Migrations
 {
     [DbContext(typeof(MutableDbContext))]
-    [Migration("20250105193726_Migration10")]
-    partial class Migration10
+    [Migration("20250107195120_Migration3")]
+    partial class Migration3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,6 +145,9 @@ namespace LibruaryAPI.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");

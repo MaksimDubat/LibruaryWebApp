@@ -18,6 +18,7 @@ namespace LibruaryAPI.WebAPI.Registrations
             );
 
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
 
         services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LibruaryRegistrations).Assembly));
         }

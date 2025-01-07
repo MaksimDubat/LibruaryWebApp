@@ -143,6 +143,9 @@ namespace LibruaryAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 

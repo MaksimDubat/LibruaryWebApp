@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibruaryAPI.Migrations
 {
     [DbContext(typeof(MutableDbContext))]
-    [Migration("20250105165309_Migration3")]
-    partial class Migration3
+    [Migration("20250107201111_Migration4")]
+    partial class Migration4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,6 +146,9 @@ namespace LibruaryAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
@@ -158,6 +161,15 @@ namespace LibruaryAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<bool>("IsAvaiable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("TakenAt")
                         .HasColumnType("timestamp with time zone");
@@ -184,6 +196,11 @@ namespace LibruaryAPI.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("CartStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("StorageDays")
                         .ValueGeneratedOnAdd()
@@ -252,7 +269,7 @@ namespace LibruaryAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("LibruaryAPI.Domain.Entities.AppUsers", "User")
-                        .WithMany()
+                        .WithMany("Carts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -269,6 +286,8 @@ namespace LibruaryAPI.Migrations
 
             modelBuilder.Entity("LibruaryAPI.Domain.Entities.AppUsers", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("Role");
                 });
 

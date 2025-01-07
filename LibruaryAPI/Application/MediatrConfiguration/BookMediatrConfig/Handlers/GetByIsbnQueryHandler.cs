@@ -20,7 +20,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
             var book = await _bookRepository.GetByIsbnAsync(request.ISBN, cancellationToken);
             if(book == null)
             {
-                throw new KeyNotFoundException("not found");
+               throw new KeyNotFoundException("not found");
             }
             return book;
         }

@@ -17,7 +17,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         public async Task<string> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
             await _bookRepository.DeleteAsync(request.Id, cancellationToken);
-            return $"{request.Id} deleted";
+            return $"{request.Id} was deleted";
         }
     }
 }

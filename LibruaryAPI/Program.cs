@@ -12,10 +12,7 @@ namespace LibruaryAPI
 
             // Add services to the container.
             LibruaryRegistrations.RegisterRepositories(builder.Services, builder.Configuration);
-            builder.Services.AddDbContext<MutableDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

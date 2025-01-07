@@ -5,7 +5,7 @@
 namespace LibruaryAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration10 : Migration
+    public partial class Migration3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
