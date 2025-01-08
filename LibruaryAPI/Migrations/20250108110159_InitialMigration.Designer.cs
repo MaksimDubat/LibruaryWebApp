@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibruaryAPI.Migrations
 {
     [DbContext(typeof(MutableDbContext))]
-    [Migration("20250107201111_Migration4")]
-    partial class Migration4
+    [Migration("20250108110159_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

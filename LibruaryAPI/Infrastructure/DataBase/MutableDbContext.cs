@@ -18,8 +18,8 @@ namespace LibruaryAPI.Infrastructure.DataBase
         public DbSet<Cart> Cart {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MutableDbContext).Assembly);
+            base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

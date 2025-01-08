@@ -1,4 +1,9 @@
-﻿using LibruaryAPI.Application.Services;
+﻿using FluentValidation;
+using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
+using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
+using LibruaryAPI.Application.Services;
+using LibruaryAPI.Application.Validators.AuthorValidation;
+using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +22,15 @@ namespace LibruaryAPI.WebAPI.Registrations
                 options.UseNpgsql(connectionString)
             );
 
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+        
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LibruaryRegistrations).Assembly));
 
-        services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LibruaryRegistrations).Assembly));
+            services.AddTransient<IValidator<AddBookCommand>, BookFluentValidator>();
+            services.AddTransient<IValidator<UpdateBookCommand>, BookUpdateFluentValidator>();
+            services.AddTransient<IValidator<AddAuthorCommand>, AuthorFluentValidator>();
+            services.AddTransient<IValidator<UpdateAuthorCommand>, AuthorUpdateFluentValidator>();
         }
     }
 }
