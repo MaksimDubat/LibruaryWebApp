@@ -6,6 +6,7 @@ using LibruaryAPI.Application.Validators.AuthorValidation;
 using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibruaryAPI.WebAPI.Registrations
@@ -31,6 +32,9 @@ namespace LibruaryAPI.WebAPI.Registrations
             services.AddTransient<IValidator<UpdateBookCommand>, BookUpdateFluentValidator>();
             services.AddTransient<IValidator<AddAuthorCommand>, AuthorFluentValidator>();
             services.AddTransient<IValidator<UpdateAuthorCommand>, AuthorUpdateFluentValidator>();
+
+            
+
         }
     }
 }
