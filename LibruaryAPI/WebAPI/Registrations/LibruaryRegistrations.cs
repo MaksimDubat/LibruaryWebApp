@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using LibruaryAPI.Application.JwtSet.Options;
+using LibruaryAPI.Application.JwtSet.Services;
 using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
 using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
 using LibruaryAPI.Application.Services;
@@ -7,7 +9,10 @@ using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LibruaryAPI.WebAPI.Registrations
 {
@@ -33,8 +38,30 @@ namespace LibruaryAPI.WebAPI.Registrations
             services.AddTransient<IValidator<AddAuthorCommand>, AuthorFluentValidator>();
             services.AddTransient<IValidator<UpdateAuthorCommand>, AuthorUpdateFluentValidator>();
 
-            
+            var jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
+            services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
 
+            services.AddAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtOptions.Issuer,
+                        ValidAudience = jwtOptions.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                    };
+                });
+
+
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
     }
 }

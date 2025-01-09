@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.JwtSet.Options;
+using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -6,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LibruaryAPI.Application.JwtSet
+namespace LibruaryAPI.Application.JwtSet.Services
 {
     /// <summary>
     /// Класс для создания Jwt-токенов.

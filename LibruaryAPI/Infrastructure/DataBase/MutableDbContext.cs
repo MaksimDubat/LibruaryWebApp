@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.JwtSet.Options;
+using LibruaryAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace LibruaryAPI.Infrastructure.DataBase
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Author { get; set; }
         public DbSet<Cart> Cart {  get; set; }
+        public DbSet<RefreshTokenOptions> RefreshTokenOptions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MutableDbContext).Assembly);

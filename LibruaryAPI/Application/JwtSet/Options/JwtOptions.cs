@@ -1,4 +1,4 @@
-﻿namespace LibruaryAPI.Application.JwtSet
+﻿namespace LibruaryAPI.Application.JwtSet.Options
 {
     /// <summary>
     /// Класс для хранения настроек Jwt.

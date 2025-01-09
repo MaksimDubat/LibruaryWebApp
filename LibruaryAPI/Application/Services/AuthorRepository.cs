@@ -16,6 +16,7 @@ namespace LibruaryAPI.Application.Services
             _context = context;
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Book>> GetBooksByAuthorNameAsync(string firstName, string lastName, CancellationToken cancellationToken)
         {
             var books = await _context.Books
