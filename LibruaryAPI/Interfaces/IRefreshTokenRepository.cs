@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.JwtSet.Options;
+﻿using LibruaryAPI.Application.RefreshTokenSet.Options;
 
 namespace LibruaryAPI.Interfaces
 {
@@ -25,5 +25,12 @@ namespace LibruaryAPI.Interfaces
         /// <param name="token"></param>
         /// <param name="cancellation"></param>
         Task UpdateAsync(RefreshTokenOptions token, CancellationToken cancellation);
+        /// <summary>
+        /// Удаление устаревшего токена.
+        /// </summary>
+        /// <param name="expirationDate"></param>
+        /// <param name="cancellation"></param>
+        Task DeleteExpiredTokensAsync(DateTime expirationDate, CancellationToken cancellation);
+
     }
 }

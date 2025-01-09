@@ -1,6 +1,6 @@
 ﻿using LibruaryAPI.Domain.Entities;
 
-namespace LibruaryAPI.Application.JwtSet.Options
+namespace LibruaryAPI.Application.RefreshTokenSet.Options
 {
     /// <summary>
     /// Класс для управления refresh token.

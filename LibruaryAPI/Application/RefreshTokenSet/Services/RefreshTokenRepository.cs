@@ -1,9 +1,9 @@
-﻿using LibruaryAPI.Application.JwtSet.Options;
+﻿using LibruaryAPI.Application.RefreshTokenSet.Options;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibruaryAPI.Application.JwtSet.Services
+namespace LibruaryAPI.Application.RefreshTokenSet.Services
 {
     /// <summary>
     /// Сервис по работе с refresh token.
@@ -21,6 +21,15 @@ namespace LibruaryAPI.Application.JwtSet.Services
             await _context.RefreshTokenOptions.AddAsync(token, cancellation);
             await _context.SaveChangesAsync(cancellation);
         }
+        /// <inheritdoc/>
+        public async Task DeleteExpiredTokensAsync(DateTime expirationDate, CancellationToken cancellation)
+        {
+            var token = _context.RefreshTokenOptions
+                .Where(x => x.Expiration <= expirationDate);
+            _context.RefreshTokenOptions.RemoveRange(token);
+            await _context.SaveChangesAsync(cancellation);
+        }
+
         /// <inheritdoc/>
         public async Task<RefreshTokenOptions> GetByTokenAsync(string token, CancellationToken cancellation)
         {

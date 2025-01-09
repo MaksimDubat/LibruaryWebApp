@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.JwtSet.Options;
+﻿using LibruaryAPI.Application.RefreshTokenSet.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

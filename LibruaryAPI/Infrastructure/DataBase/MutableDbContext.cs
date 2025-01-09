@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.JwtSet.Options;
+﻿using LibruaryAPI.Application.RefreshTokenSet.Options;
 using LibruaryAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

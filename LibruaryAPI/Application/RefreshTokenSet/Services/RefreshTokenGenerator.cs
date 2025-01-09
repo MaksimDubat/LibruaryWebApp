@@ -1,9 +1,11 @@
 ﻿using LibruaryAPI.Application.JwtSet.Options;
+using LibruaryAPI.Application.JwtSet.Services;
+using LibruaryAPI.Application.RefreshTokenSet.Options;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Interfaces;
 using System.Security.Cryptography;
 
-namespace LibruaryAPI.Application.JwtSet.Services
+namespace LibruaryAPI.Application.RefreshTokenSet.Services
 {
     /// <summary>
     /// Сервис по генерации refresh token.
@@ -12,10 +14,12 @@ namespace LibruaryAPI.Application.JwtSet.Services
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IBaseRepository<AppUsers> _baseRepository;
-        public RefreshTokenGenerator(IRefreshTokenRepository refreshTokenRepository, IBaseRepository<AppUsers> baseRepository)
+        private readonly IJwtGenerator _jwtGenerator;
+        public RefreshTokenGenerator(IRefreshTokenRepository refreshTokenRepository, IBaseRepository<AppUsers> baseRepository, IJwtGenerator jwtGenerator)
         {
             _refreshTokenRepository = refreshTokenRepository;
             _baseRepository = baseRepository;
+            _jwtGenerator = jwtGenerator;
         }
         /// <inheritdoc/>
         public async Task<RefreshTokenOptions> CreateRefreshTokenAsync(int userId, CancellationToken cancellation)
@@ -36,10 +40,36 @@ namespace LibruaryAPI.Application.JwtSet.Services
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
         /// <inheritdoc/>
+        public async Task<TokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellation)
+        {
+            var existingToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken, cancellation);
+            if(existingToken == null || existingToken.Expiration <= DateTime.UtcNow)
+            {
+                throw new UnauthorizedAccessException("invalid date");
+            }
+            var user = await _baseRepository.GetAsync(existingToken.UserId, cancellation); 
+            if(user == null)
+            {
+                throw new UnauthorizedAccessException("invalid user");
+            }
+            var roles = new List<string>();
+            var newJwt = _jwtGenerator.GenerateToken(user, roles);
+
+            var newRefreshToken = GenerateRefreshToken();
+            existingToken.Expiration = DateTime.UtcNow.AddDays(5);
+            await _refreshTokenRepository.UpdateAsync(existingToken, cancellation);
+            return new TokenResponse
+            {
+                JwtToken = newJwt,
+                RefreshToken = newRefreshToken,
+            };
+        }
+
+        /// <inheritdoc/>
         public async Task RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellation)
         {
-            var token  = await _refreshTokenRepository.GetByTokenAsync(refreshToken,cancellation);
-            if (token == null)
+            var token = await _refreshTokenRepository.GetByTokenAsync(refreshToken, cancellation);
+            if (token != null)
             {
                 await _refreshTokenRepository.UpdateAsync(new RefreshTokenOptions
                 {
@@ -55,7 +85,7 @@ namespace LibruaryAPI.Application.JwtSet.Services
         public async Task<AppUsers> ValidateRefreshTokenAsync(string refreshToken, CancellationToken cancellation)
         {
             var token = await _refreshTokenRepository.GetByTokenAsync(refreshToken, cancellation);
-            if(token == null || token.Expiration <= DateTime.UtcNow)
+            if (token == null || token.Expiration <= DateTime.UtcNow)
             {
                 return null;
             }
