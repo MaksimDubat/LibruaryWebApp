@@ -10,30 +10,22 @@ namespace LibruaryAPI.Application.Validators.BookValidation
     {
         public BookUpdateFluentValidator()
         {
-            RuleFor(x => x.Book)
+            RuleFor(x => x.Id)
                 .NotNull()
                 .WithMessage("cant be null");
-            RuleFor(x => x.Book.BookId)
-                .NotEmpty()
-                .WithMessage("need book id");
-            RuleFor(x => x.Book.ISBN)
-                .NotEmpty()
-                .WithMessage("error generation of ISBN");
-            RuleFor(x => x.Book.Title)
+            RuleFor(x => x.Title)
                 .NotEmpty()
                 .MaximumLength(100)
                 .WithMessage("no longer than 100");
-            RuleFor(x => x.Book.Description)
+            RuleFor(x => x.Description)
                 .NotEmpty()
                 .MaximumLength(250)
                 .WithMessage("no longer than 250");
-            RuleFor(x => x.Book.Author)
+            RuleFor(x => x.Image)
                 .NotEmpty()
-                .WithMessage("need author");
-            RuleFor(x => x.Book.AuthorId)
-                .NotEmpty()
-                .WithMessage("need authorId");
-            RuleFor(x => x.Book.Amount)
+                .MaximumLength(300)
+                .WithMessage("need image");
+            RuleFor(x => x.Amount)
                 .NotEmpty()
                 .GreaterThan(0)
                 .WithMessage("cant be less than 0");

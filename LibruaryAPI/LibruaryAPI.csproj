@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Application\Services\" />
+    <Folder Include="WebAPI\Controllers\" />
   </ItemGroup>
 
 </Project>

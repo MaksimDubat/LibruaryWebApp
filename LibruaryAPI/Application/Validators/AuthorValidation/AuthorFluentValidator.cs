@@ -10,24 +10,19 @@ namespace LibruaryAPI.Application.Validators.AuthorValidation
     {
         public AuthorFluentValidator()
         {
-            RuleFor(x => x.Author)
-                .NotNull();
-            RuleFor(x => x.Author.AuthorId)
-                .NotEmpty()
-                .WithMessage("need id");
-            RuleFor(x => x.Author.FirstName)
+            RuleFor(x => x.FirstName)
                 .NotEmpty()
                 .MaximumLength(50)
                 .WithMessage("no longer than 50");
-            RuleFor(x => x.Author.LastName)
+            RuleFor(x => x.LastName)
                 .NotEmpty()
                 .MaximumLength(50)
                 .WithMessage("no longer than 50");
-            RuleFor(x => x.Author.Country)
+            RuleFor(x => x.Country)
                 .NotEmpty()
                 .MaximumLength(50)
                 .WithMessage("no longer than 50");
-            RuleFor(x => x.Author.BirthDate)
+            RuleFor(x => x.BirthDate)
                 .NotEmpty();
         }
     }

@@ -1,5 +1,5 @@
-﻿using LibruaryAPI.Application.RefreshTokenSet.Options;
-using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Infrastructure.RefreshTokenSet.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
