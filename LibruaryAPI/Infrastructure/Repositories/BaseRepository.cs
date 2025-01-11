@@ -48,6 +48,19 @@ namespace LibruaryAPI.Infrastructure.Repositories
             return entity;
         }
         /// <inheritdoc/>
+        public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            if(pageNumber < 1 || pageSize < 1)
+            {
+                throw new ArgumentException("wrong page size");
+            }
+            return await _context.Set<T>()
+                .Skip((pageNumber-1)* pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+        }
+
+        /// <inheritdoc/>
         public async Task UpdateAsync(T entity, CancellationToken cancellation)
         {
             if (entity == null)

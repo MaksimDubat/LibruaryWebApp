@@ -35,6 +35,12 @@
         /// <param name="id"></param>
         /// <param name="cancellation"></param>
         Task<T> DeleteAsync(int id, CancellationToken cancellation);
-
+        /// <summary>
+        /// Пагинация страницы.
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="cancellationToken"></param>
+        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
     }
 }
