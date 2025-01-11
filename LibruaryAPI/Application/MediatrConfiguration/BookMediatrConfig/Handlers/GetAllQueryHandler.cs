@@ -10,14 +10,14 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<Book>>
     {
-        private readonly IBookRepository _bookRepository;
-        public GetAllQueryHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public GetAllQueryHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<Book>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            return await _bookRepository.GetAllAsync(cancellationToken);
+            return await _unitOfWork.Books.GetAllAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

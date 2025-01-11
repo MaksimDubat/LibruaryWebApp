@@ -9,12 +9,27 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Comma
     public class AddAuthorCommand : IRequest<Author>
     {
         /// <summary>
-        /// Сущность автора.
+        /// Имя автора.
         /// </summary>
-        public Author Author { get; set; }
-        public AddAuthorCommand(Author author) 
-        { 
-            Author = author; 
+        public string FirstName { get; set; }
+        /// <summary>
+        /// Фамилия автора.
+        /// </summary>
+        public string LastName { get; set; }
+        /// <summary>
+        /// Страна автора.
+        /// </summary>
+        public string Country { get; set; }
+        /// <summary>
+        /// Дата рождения автора.
+        /// </summary>
+        public DateTime BirthDate { get; set; }
+        public AddAuthorCommand(string firstName, string lastName, string country, DateTime birthDate)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Country = country;
+            BirthDate = birthDate;
         }
     }
 }

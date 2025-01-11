@@ -6,18 +6,18 @@ using MediatR;
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handlers
 {
     /// <summary>
-    /// Обработчик запроса на получение книги по ISBN
+    /// Обработчик запроса на получение книги по ISBN.
     /// </summary>
     public class GetByIsbnQueryHandler : IRequestHandler<GetByIsbnQuery, Book>
     {
-        private readonly IBookRepository _bookRepository;
-        public GetByIsbnQueryHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public GetByIsbnQueryHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Book> Handle(GetByIsbnQuery request, CancellationToken cancellationToken)
         {
-            var book = await _bookRepository.GetByIsbnAsync(request.ISBN, cancellationToken);
+            var book = await _unitOfWork.Books.GetByIsbnAsync(request.ISBN, cancellationToken);
             if(book == null)
             {
                throw new KeyNotFoundException("not found");

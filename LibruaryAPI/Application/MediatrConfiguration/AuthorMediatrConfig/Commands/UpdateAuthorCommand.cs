@@ -15,11 +15,26 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Comma
         /// <summary>
         /// Сущность автора.
         /// </summary>
-        public Author Author { get; set; }
-        public UpdateAuthorCommand(int id, Author author)
+        public string FirstName { get; set; }
+        /// <summary>
+        /// Фамилия автора.
+        /// </summary>
+        public string LastName { get; set; }
+        /// <summary>
+        /// Страна автора.
+        /// </summary>
+        public string Country { get; set; }
+        /// <summary>
+        /// Дата рождения автора.
+        /// </summary>
+        public DateTime BirthDate { get; set; }
+        public UpdateAuthorCommand(int id, string firstName, string lastName, string country, DateTime birthDate)
         {
             Id = id;
-            Author = author;
+            FirstName = firstName;
+            LastName = lastName;
+            Country = country;
+            BirthDate = birthDate;
         }
     }
 }

@@ -10,15 +10,14 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Book>
     {
-        private readonly IBookRepository _bookRepository;
-        public UploadImageCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public UploadImageCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
-        }
-
+            _unitOfWork = unitOfWork;
+        }       
         public async Task<Book> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
-            return await _bookRepository.UploadImageAsync(request.BookId, request.Image, cancellationToken);    
+            return await _unitOfWork.Books.UploadImageAsync(request.BookId, request.Image, cancellationToken);    
         }
     }
 }

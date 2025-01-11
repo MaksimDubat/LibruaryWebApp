@@ -5,7 +5,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
     /// <summary>
     /// Модель команды для подтверждения выдачи книги.
     /// </summary>
-    public class ConfirmIssuanceCommand : IRequest<bool>
+    public class ConfirmIssuanceCommand : IRequest<bool> 
     {
         /// <summary>
         /// Идентификатор пользователя.

@@ -30,6 +30,7 @@ namespace LibruaryAPI.Application.JwtSet.Services
                 new Claim (JwtRegisteredClaimNames.Email, user.UserEmail),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim (ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));

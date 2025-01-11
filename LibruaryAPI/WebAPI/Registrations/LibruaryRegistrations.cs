@@ -4,10 +4,11 @@ using LibruaryAPI.Application.JwtSet.Services;
 using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
 using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
 using LibruaryAPI.Application.RefreshTokenSet.Services;
-using LibruaryAPI.Application.Services;
+using LibruaryAPI.Application.Repositories;
 using LibruaryAPI.Application.Validators.AuthorValidation;
 using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Infrastructure.DataBase;
+using LibruaryAPI.Infrastructure.UnityOfWork;
 using LibruaryAPI.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,9 +30,11 @@ namespace LibruaryAPI.WebAPI.Registrations
                 options.UseNpgsql(connectionString)
             );
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
-        
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
             services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LibruaryRegistrations).Assembly));
 
             services.AddTransient<IValidator<AddBookCommand>, BookFluentValidator>();
@@ -57,7 +60,20 @@ namespace LibruaryAPI.WebAPI.Registrations
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy =>
+                    policy.RequireRole("Admin"));
 
+                options.AddPolicy("UserPolicy", policy =>
+                    policy.RequireRole("User"));
+
+                options.AddPolicy("GuestPolicy", policy =>
+                    policy.RequireRole("Guest"));
+
+                options.AddPolicy("UserOrGuestPolicy", policy =>
+                    policy.RequireRole("User", "Guest"))    ;
+            });
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();

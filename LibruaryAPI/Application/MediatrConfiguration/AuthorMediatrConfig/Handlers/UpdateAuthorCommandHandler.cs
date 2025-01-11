@@ -10,19 +10,26 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// </summary>
     public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, Author>
     {
-        private readonly IAuthorRepository _authorRepository;
-        public UpdateAuthorCommandHandler(IAuthorRepository authorRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public UpdateAuthorCommandHandler(IUnitOfWork unitOfWork)
         {
-            _authorRepository = authorRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Author> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
-            if(request.Id == request.Author.AuthorId)
+            var author = await _unitOfWork.Authors.GetAsync(request.Id, cancellationToken);
+            if (author == null)
             {
-                throw new ArgumentException("invalid");
+                throw new KeyNotFoundException("invalid author");
             }
-            await _authorRepository.UpdateAsync(request.Author, cancellationToken);
-            return request.Author;
+            author.FirstName = request.FirstName;
+            author.LastName = request.LastName;
+            author.Country = request.Country;
+            author.BirthDate = request.BirthDate;
+
+            await _unitOfWork.Authors.UpdateAsync(author, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return author;
         }
     }
 }

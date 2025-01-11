@@ -3,7 +3,7 @@ using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries
 {
-    /// <summary>
+    /// <summary> 
     /// Очередь для получения книги по ISBN
     /// </summary>
     public class GetByIsbnQuery : IRequest<Book>

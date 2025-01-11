@@ -9,7 +9,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
     public class DeleteBookCommand : IRequest<string>
     {
         /// <summary>
-        /// Идентификатор книги.
+        /// Идентификатор книги. 
         /// </summary>
         public int Id { get; set; }
         public DeleteBookCommand(int id)

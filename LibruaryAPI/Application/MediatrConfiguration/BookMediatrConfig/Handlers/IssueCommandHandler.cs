@@ -9,14 +9,15 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class IssueCommandHandler : IRequestHandler<IssueCommand, string>
     {
-        private readonly IBookRepository _bookRepository;
-        public IssueCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public IssueCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<string> Handle(IssueCommand request, CancellationToken cancellationToken)
         {
-            return await _bookRepository.IssueAsync(request.UserId, request.BookId, cancellationToken);
+            await _unitOfWork.Books.IssueAsync(request.UserId, request.BookId, cancellationToken);
+            return "issude";
         }
     }
 }

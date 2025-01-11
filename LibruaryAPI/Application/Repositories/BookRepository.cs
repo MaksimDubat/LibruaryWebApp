@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 
-namespace LibruaryAPI.Application.Services
+namespace LibruaryAPI.Application.Repositories
 {
     /// <summary>
     /// Репозиторий по работе с книгами.
@@ -24,7 +24,7 @@ namespace LibruaryAPI.Application.Services
         public async Task<bool> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation)
         {
             var cart = await _context.Cart
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.BookId == bookId && x.CartStatus == "Добавлено!", cancellation);    
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.BookId == bookId && x.CartStatus == "Добавлено!", cancellation);
             if (cart != null)
             {
                 return false;
@@ -85,7 +85,7 @@ namespace LibruaryAPI.Application.Services
                 StorageDays = 14,
                 CartStatus = "Добавлено!"
             };
-            await _context.Cart.AddAsync(cart,cancellation);
+            await _context.Cart.AddAsync(cart, cancellation);
             await _context.SaveChangesAsync(cancellation);
             return "Ok";
         }
@@ -93,7 +93,7 @@ namespace LibruaryAPI.Application.Services
         public async Task<Book> UploadImageAsync(int bookId, IFormFile image, CancellationToken cancellation)
         {
             var book = await _context.Books
-                .FirstOrDefaultAsync( x => x.BookId == bookId, cancellation);
+                .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
             if (book == null)
             {
                 throw new ArgumentException("invalid");
@@ -102,12 +102,12 @@ namespace LibruaryAPI.Application.Services
             {
                 throw new ArgumentException("invalid");
             }
-            const long maxSize = 5 * 1024* 1024;    
-            if(image.Length > maxSize)
+            const long maxSize = 5 * 1024 * 1024;
+            if (image.Length > maxSize)
             {
                 throw new ArgumentException("invalid size");
             }
-            var allowedType = new[] {".jpg", ".jpeg", ".png"};
+            var allowedType = new[] { ".jpg", ".jpeg", ".png" };
             var type = Path.GetExtension(image.FileName).ToLower();
             if (!allowedType.Contains(type))
             {
@@ -131,7 +131,7 @@ namespace LibruaryAPI.Application.Services
             using var outputStream = new MemoryStream();
             IImageEncoder encoder = type == ".png" ? new PngEncoder() : new JpegEncoder();
             await processedImage.SaveAsync(outputStream, encoder, cancellation);
-            var base64Image = Convert.ToBase64String(outputStream.ToArray());  
+            var base64Image = Convert.ToBase64String(outputStream.ToArray());
             book.Image = base64Image;
 
             _context.Books.Update(book);

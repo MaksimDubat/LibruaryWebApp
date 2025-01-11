@@ -9,12 +9,32 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
     public class AddBookCommand : IRequest<Book>
     {
         /// <summary>
-        /// Сущность книги.
+        /// Название книги.
         /// </summary>
-        public Book Book { get; set; }
-        public AddBookCommand (Book book)
+        public string Title { get; set; }
+        /// <summary>
+        /// Описание книги.
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// Изображение.
+        /// </summary>
+        public string Image { get; set; }
+        /// <summary>
+        /// Идентификатор автора.
+        /// </summary>
+        public int AuthorId { get; set; }
+        /// <summary>
+        /// Количество.
+        /// </summary>
+        public int Amount { get; set; }
+        public AddBookCommand(string title, string description, string image, int authorId, int amount)
         {
-            Book = book;
+            Title = title;
+            Description = description;
+            Image = image;
+            AuthorId = authorId;
+            Amount = amount;
         }
     }
 }

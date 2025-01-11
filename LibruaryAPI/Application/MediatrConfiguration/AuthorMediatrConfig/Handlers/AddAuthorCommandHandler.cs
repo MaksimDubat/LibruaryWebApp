@@ -10,15 +10,23 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// </summary>
     public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand, Author>
     {
-        private readonly IAuthorRepository _authorRepository;
-        public AddAuthorCommandHandler(IAuthorRepository authorRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public AddAuthorCommandHandler(IUnitOfWork unitOfWork)
         {
-            _authorRepository = authorRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Author> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
         {
-            await _authorRepository.AddAsync(request.Author, cancellationToken);
-            return request.Author;
+            var author = new Author 
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Country = request.Country,
+                BirthDate = request.BirthDate
+            };   
+            await _unitOfWork.Authors.AddAsync(author, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return author;
         }
     }
 }

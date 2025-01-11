@@ -10,14 +10,14 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, Book>
     {
-        private readonly IBookRepository _bookRepository;
-        public GetByIdQueryHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public GetByIdQueryHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Book> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
-            var book = await _bookRepository.GetAsync(request.Id, cancellationToken);
+            var book = await _unitOfWork.Books.GetAsync(request.Id, cancellationToken);
             if (book == null)
             {
                 throw new ArgumentNullException("invalid");

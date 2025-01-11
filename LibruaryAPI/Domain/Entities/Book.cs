@@ -43,7 +43,7 @@ namespace LibruaryAPI.Domain.Entities
         /// <summary>
         /// Изображение книги.
         /// </summary>
-        public string? Image { get; set; }
+        public required string Image { get; set; }
         /// <summary>
         /// КОличество экземпляров.
         /// </summary>

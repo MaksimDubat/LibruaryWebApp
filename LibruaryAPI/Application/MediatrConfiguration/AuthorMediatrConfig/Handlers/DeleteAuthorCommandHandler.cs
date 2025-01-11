@@ -9,15 +9,16 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// </summary>
     public class DeleteAuthorCommandHandler : IRequestHandler<DeleteAuthorCommand, string>
     {
-        private readonly IAuthorRepository _authorRepository;
-        public DeleteAuthorCommandHandler(IAuthorRepository authorRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public DeleteAuthorCommandHandler(IUnitOfWork unitOfWork)
         {
-            _authorRepository = authorRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<string> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
-            await _authorRepository.DeleteAsync(request.Id, cancellationToken);
-            return $"{request.Id} Author was deleted";
+            await _unitOfWork.Authors.DeleteAsync(request.Id, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return $"author with {request.Id} was deleted";
         }
     }
 }

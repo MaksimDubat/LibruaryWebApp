@@ -2,7 +2,7 @@
 using LibruaryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibruaryAPI.Application.Services
+namespace LibruaryAPI.Application.Repositories
 {
     /// <summary>
     /// Репозиторий по работе с CRUD-операциями.
@@ -18,7 +18,7 @@ namespace LibruaryAPI.Application.Services
         public async Task AddAsync(T entity, CancellationToken cancellation)
         {
             await _context.AddAsync(entity, cancellation);
-            await _context.SaveChangesAsync(cancellation);  
+            await _context.SaveChangesAsync(cancellation);
         }
         /// <inheritdoc/>
         public async Task<T> DeleteAsync(int id, CancellationToken cancellation)
@@ -40,7 +40,7 @@ namespace LibruaryAPI.Application.Services
         /// <inheritdoc/>
         public async Task<T> GetAsync(int id, CancellationToken cancellation)
         {
-            var entity =  await _context.Set<T>().FindAsync(id, cancellation);
+            var entity = await _context.Set<T>().FindAsync(id, cancellation);
             if (entity == null)
             {
                 throw new KeyNotFoundException(nameof(entity));
@@ -50,12 +50,12 @@ namespace LibruaryAPI.Application.Services
         /// <inheritdoc/>
         public async Task UpdateAsync(T entity, CancellationToken cancellation)
         {
-           if (entity == null)
-           {
+            if (entity == null)
+            {
                 throw new ArgumentNullException(nameof(entity));
-           }
-           _context.Update(entity);
-           await _context.SaveChangesAsync(cancellation);
+            }
+            _context.Update(entity);
+            await _context.SaveChangesAsync(cancellation);
         }
-    }   
+    }
 }

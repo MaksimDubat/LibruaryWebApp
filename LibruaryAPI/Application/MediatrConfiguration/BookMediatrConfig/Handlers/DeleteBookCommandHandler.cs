@@ -9,14 +9,15 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, string>
     {
-        private readonly IBookRepository _bookRepository;
-        public DeleteBookCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;  
+        public DeleteBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<string> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            await _bookRepository.DeleteAsync(request.Id, cancellationToken);
+            await _unitOfWork.Books.DeleteAsync(request.Id, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
             return $"{request.Id} was deleted";
         }
     }

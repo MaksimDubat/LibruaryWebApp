@@ -11,19 +11,26 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book>
     {
-        private readonly IBookRepository _bookRepository;
-        public UpdateBookCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public UpdateBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Book> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            if(request.Id != request.Book.BookId)
+            var book = await _unitOfWork.Books.GetAsync(request.Id, cancellationToken);
+            if (book == null)
             {
-                throw new ArgumentException("error");
+                throw new KeyNotFoundException("invalid book");
             }
-            await _bookRepository.UpdateAsync(request.Book, cancellationToken);
-            return request.Book;
+            book.Title = request.Title;
+            book.Description = request.Description;
+            book.Image = request.Image;
+            book.Amount = request.Amount;
+
+            await _unitOfWork.Books.UpdateAsync(book, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return book;
         }
     }
 }

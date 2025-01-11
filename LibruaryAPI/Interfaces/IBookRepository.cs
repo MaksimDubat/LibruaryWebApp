@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.Services;
+﻿using LibruaryAPI.Application.Repositories;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Infrastructure.DataBase;
 

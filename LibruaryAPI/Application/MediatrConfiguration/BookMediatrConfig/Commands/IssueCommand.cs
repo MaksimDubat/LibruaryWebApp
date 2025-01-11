@@ -5,7 +5,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
     /// <summary>
     /// Модель команды выдачи книги.
     /// </summary>
-    public class IssueCommand : IRequest<string>
+    public class IssueCommand : IRequest<string> 
     {
         /// <summary>
         /// Идентификатор пользователя.

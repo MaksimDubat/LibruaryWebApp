@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
+﻿using LibruaryAPI.Application.Common;
+using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Interfaces;
 using MediatR;
@@ -10,15 +11,31 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class AddBookCommandHandler : IRequestHandler<AddBookCommand, Book>
     {
-        private readonly IBookRepository _bookRepository;
-        public AddBookCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public AddBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Book> Handle(AddBookCommand request, CancellationToken cancellationToken)
         {
-            await _bookRepository.AddAsync(request.Book, cancellationToken);
-            return request.Book;
+            var author = await _unitOfWork.Authors.GetAsync(request.AuthorId, cancellationToken);
+            if (author == null)
+            {
+                throw new ArgumentException("wrong author id");
+            }
+            var book = new Book
+            {
+                ISBN = ISBNGenerator.GenerateISBN(),
+                Title = request.Title,
+                Description = request.Description,
+                Image = request.Image,
+                Author = author,
+                AuthorId = request.AuthorId,
+                Amount = request.Amount
+            };
+            await _unitOfWork.Books.AddAsync(book, cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return book;
         }
     }
 }

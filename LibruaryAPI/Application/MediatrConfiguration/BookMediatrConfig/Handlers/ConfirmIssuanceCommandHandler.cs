@@ -1,5 +1,5 @@
 ﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
-using LibruaryAPI.Application.Services;
+using LibruaryAPI.Application.Repositories;
 using LibruaryAPI.Interfaces;
 using MediatR;
 
@@ -10,14 +10,14 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// </summary>
     public class ConfirmIssuanceCommandHandler : IRequestHandler<ConfirmIssuanceCommand, bool>
     {
-        private readonly IBookRepository _bookRepository;
-        public ConfirmIssuanceCommandHandler(IBookRepository bookRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public ConfirmIssuanceCommandHandler(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<bool> Handle(ConfirmIssuanceCommand request, CancellationToken cancellationToken)
         {
-            return await _bookRepository.ConfirmIssuanceAsync(request.UserId, request.BookId, cancellationToken);
+            return await _unitOfWork.Books.ConfirmIssuanceAsync(request.UserId, request.BookId, cancellationToken);
         }
     }
 }

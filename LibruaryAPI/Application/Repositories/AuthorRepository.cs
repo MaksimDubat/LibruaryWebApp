@@ -3,7 +3,7 @@ using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibruaryAPI.Application.Services
+namespace LibruaryAPI.Application.Repositories
 {
     /// <summary>
     /// Репозиторий по работе с авторами.

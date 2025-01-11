@@ -11,15 +11,33 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
         /// <summary>
         /// Идентификатор книги.
         /// </summary>
-        public int Id { get; set; } 
+        public int Id { get; set; }
         /// <summary>
         /// Сущность книги.
         /// </summary>
-        public Book Book { get; set; }  
-        public UpdateBookCommand(int id, Book book)
+        /// <summary>
+        /// Название книги.
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
+        /// Описание книги.
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// Изображение.
+        /// </summary>
+        public string Image { get; set; }
+        /// <summary>
+        /// Количество.
+        /// </summary>
+        public int Amount { get; set; }
+        public UpdateBookCommand(int id, string title, string description, string image, int amount)
         {
             Id = id;
-            Book = book;
+            Title = title;
+            Description = description;
+            Image = image;
+            Amount = amount;
         }
     }
 }
