@@ -1,4 +1,6 @@
-﻿namespace LibruaryAPI.Application.Interfaces
+﻿using LibruaryAPI.Domain.Entities;
+
+namespace LibruaryAPI.Application.Interfaces
 {
     /// <summary>
     /// Интерфейс общего репозитория по работе с CRUD-операциями.

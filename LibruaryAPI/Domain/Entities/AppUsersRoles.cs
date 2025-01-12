@@ -12,7 +12,7 @@
         /// <summary>
         /// Пользователь.
         /// </summary>
-        public required AppUsers User { get; set; }
+        public  AppUsers User { get; set; }
         /// <summary>
         /// Идентификатор роли.
         /// </summary>
@@ -20,6 +20,6 @@
         /// <summary>
         /// Роль.
         /// </summary>
-        public required AppRoles Role { get; set; }
+        public  AppRoles Role { get; set; }
     }
 }

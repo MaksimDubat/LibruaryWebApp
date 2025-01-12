@@ -2,6 +2,7 @@
 using LibruaryAPI.Application.Interfaces;
 using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
 using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
+using LibruaryAPI.Application.Services;
 using LibruaryAPI.Application.Validators.AuthorValidation;
 using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Infrastructure.DataBase;
@@ -77,10 +78,10 @@ namespace LibruaryAPI.WebAPI.Registrations
                     policy.RequireRole("User", "Guest"))    ;
             });
 
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ILibAuthenticationService, LibAuthenticationService>();
         }
     }
 }

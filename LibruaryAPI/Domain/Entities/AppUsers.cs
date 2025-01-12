@@ -40,5 +40,10 @@ namespace LibruaryAPI.Domain.Entities
         /// Корзина.
         /// </summary>
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        /// <summary>
+        /// Получение всех ролей пользователя.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<UserRole> GetRoles() => Role.Select(x => x.Role.RoleName);
     }
 }

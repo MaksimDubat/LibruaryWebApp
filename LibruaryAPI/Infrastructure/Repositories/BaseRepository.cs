@@ -1,4 +1,5 @@
 ﻿using LibruaryAPI.Application.Interfaces;
+using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,7 +60,6 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
         }
-
         /// <inheritdoc/>
         public async Task UpdateAsync(T entity, CancellationToken cancellation)
         {
