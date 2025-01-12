@@ -1,5 +1,6 @@
 ﻿using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Infrastructure.RefreshTokenSet.Options;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,7 @@ namespace LibruaryAPI.Infrastructure.DataBase
     /// <summary>
     /// Контекст БД для управления сущностями.
     /// </summary>
-    public class MutableDbContext : DbContext
+    public class MutableDbContext : IdentityDbContext<AppUsers, AppUsersRoles, int>
     {
         public MutableDbContext(DbContextOptions<MutableDbContext> options) : base(options) { }
         public DbSet<AppUsers> AppUsers { get; set; }

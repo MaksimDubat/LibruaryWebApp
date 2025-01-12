@@ -7,6 +7,20 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quari
     /// Запрос на пагинацию.
     /// </summary>
     public class GetAuthorsPagedQuery : IRequest<IEnumerable<Author>>
-    {  
+    {
+        /// <summary>
+        /// Страница.
+        /// </summary>
+        public int PageNumber { get; set; }
+        /// <summary>
+        /// Количество элементов.
+        /// </summary>
+        public int PageSize { get; set; }
+
+        public GetAuthorsPagedQuery(int pageNumber, int pageSize)
+        {
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+        }
     }
 }

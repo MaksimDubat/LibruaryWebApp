@@ -6,7 +6,7 @@ namespace LibruaryAPI.Domain.Entities
     /// <summary>
     /// Сущность для работы с пользователями.
     /// </summary>
-    public class AppUsers
+    public class AppUsers : IdentityUser<int>
     {
         /// <summary>
         /// Идентификатор пользователя.
@@ -44,6 +44,8 @@ namespace LibruaryAPI.Domain.Entities
         /// Получение всех ролей пользователя.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<UserRole> GetRoles() => Role.Select(x => x.Role.RoleName);
+        public IEnumerable<UserRole> GetRoles() => Role
+            .Where(x => x.Role != null)
+            .Select(x => x.Role.RoleName);
     }
 }

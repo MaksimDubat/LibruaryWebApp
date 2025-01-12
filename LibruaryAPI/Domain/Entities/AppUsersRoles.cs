@@ -1,9 +1,11 @@
-﻿namespace LibruaryAPI.Domain.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace LibruaryAPI.Domain.Entities
 {
     /// <summary>
     /// Промежуточная таблица для связи ролей и пользователей.
     /// </summary>
-    public class AppUsersRoles
+    public class AppUsersRoles : IdentityRole<int>
     {
         /// <summary>
         /// Идентификатор пользователя.

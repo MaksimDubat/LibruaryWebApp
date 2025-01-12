@@ -5,6 +5,7 @@ using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
 using LibruaryAPI.Application.Services;
 using LibruaryAPI.Application.Validators.AuthorValidation;
 using LibruaryAPI.Application.Validators.BookValidation;
+using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Infrastructure.JwtSet;
 using LibruaryAPI.Infrastructure.JwtSet.Options;
@@ -13,8 +14,8 @@ using LibruaryAPI.Infrastructure.RefreshTokenSet.Services;
 using LibruaryAPI.Infrastructure.Repositories;
 using LibruaryAPI.Infrastructure.UnitOfWork;
 using LibruaryAPI.Infrastructure.UnityOfWork;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -32,6 +33,10 @@ namespace LibruaryAPI.WebAPI.Registrations
             services.AddDbContext<MutableDbContext>(options =>
                 options.UseNpgsql(connectionString)
             );
+
+            services.AddIdentity<AppUsers, AppUsersRoles>()
+       .AddEntityFrameworkStores<MutableDbContext>()
+       .AddDefaultTokenProviders();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBookRepository, BookRepository>();
@@ -75,13 +80,17 @@ namespace LibruaryAPI.WebAPI.Registrations
                     policy.RequireRole("Guest"));
 
                 options.AddPolicy("UserOrGuestPolicy", policy =>
-                    policy.RequireRole("User", "Guest"))    ;
+                    policy.RequireRole("User", "Guest"));
+
+                options.AddPolicy("UserOrAdminPolicy", policy =>
+                    policy.RequireRole("User", "Admin"));
             });
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ILibAuthenticationService, LibAuthenticationService>();
+            services.AddScoped(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
         }
     }
 }

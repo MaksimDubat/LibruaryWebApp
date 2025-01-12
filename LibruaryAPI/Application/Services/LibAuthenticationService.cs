@@ -23,8 +23,8 @@ namespace LibruaryAPI.Application.Services
         private readonly MutableDbContext _context;
         private readonly UserManager<AppUsers> _userManager;
         private readonly SignInManager<AppUsers> _signInManager;
-        public LibAuthenticationService(IBaseRepository<AppUsers> baseRepository, IJwtGenerator jwtGenerator, 
-            IPasswordHasher<AppUsers> passwordHasher, MutableDbContext context, 
+        public LibAuthenticationService(IBaseRepository<AppUsers> baseRepository, IJwtGenerator jwtGenerator,
+            IPasswordHasher<AppUsers> passwordHasher, MutableDbContext context,
             UserManager<AppUsers> userManager, SignInManager<AppUsers> signInManager)
         {
             _baseRepository = baseRepository;
@@ -34,14 +34,15 @@ namespace LibruaryAPI.Application.Services
             _userManager = userManager;
             _signInManager = signInManager;
         }
-       
+
         /// <inheritdoc/>
         public async Task<IdentityResult> RegisterAsync(string name, string email, string password, CancellationToken cancellation)
         {
-            if(await _context.Set<AppUsers>(email).FirstOrDefaultAsync(x => x.UserEmail == email, cancellation) != null)
+            if (await _context.Set<AppUsers>(email).FirstOrDefaultAsync(x => x.UserEmail == email, cancellation) != null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "Email already exists." });
             }
+
             var user = new AppUsers
             {
                 Name = name,
@@ -60,9 +61,10 @@ namespace LibruaryAPI.Application.Services
                 UserId = savedUser.UserId,
                 RoleId = (int)UserRole.User
             };
-            await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
-            await _context.SaveChangesAsync(cancellation);
-            return IdentityResult.Success;
+            //await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
+            //await _context.SaveChangesAsync(cancellation);
+            //return IdentityResult.Success;
+            return await _userManager.CreateAsync(savedUser, password);
         }
         /// <inheritdoc/>
         public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellation)
@@ -81,16 +83,16 @@ namespace LibruaryAPI.Application.Services
             var user = await _context.Set<AppUsers>()
                 .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.UserEmail == email, cancellation);
-            if(user == null)
+            if (user == null)
             {
                 throw new UnauthorizedAccessException("Invalid email or password");
             }
             var verResult = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
-            if(verResult != PasswordVerificationResult.Success)
+            if (verResult != PasswordVerificationResult.Success)
             {
                 throw new UnauthorizedAccessException("Invalid email or password");
             }
-            var roles  = user.GetRoles().Select(x => x.ToString()).ToList();
+            var roles = user.GetRoles().Select(x => x.ToString()).ToList();
             var token = _jwtGenerator.GenerateToken(user, roles);
             return token;
         }
