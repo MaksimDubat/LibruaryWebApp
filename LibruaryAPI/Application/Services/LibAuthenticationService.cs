@@ -61,10 +61,9 @@ namespace LibruaryAPI.Application.Services
                 UserId = savedUser.UserId,
                 RoleId = (int)UserRole.User
             };
-            //await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
-            //await _context.SaveChangesAsync(cancellation);
-            //return IdentityResult.Success;
-            return await _userManager.CreateAsync(savedUser, password);
+            await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
+            await _context.SaveChangesAsync(cancellation);
+            return IdentityResult.Success;
         }
         /// <inheritdoc/>
         public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellation)
