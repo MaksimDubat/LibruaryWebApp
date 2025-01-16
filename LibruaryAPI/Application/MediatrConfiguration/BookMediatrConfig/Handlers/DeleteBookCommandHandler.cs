@@ -1,5 +1,5 @@
 ﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
-using LibruaryAPI.Infrastructure.UnitOfWork;
+using LibruaryAPI.Domain.Interfaces;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handlers

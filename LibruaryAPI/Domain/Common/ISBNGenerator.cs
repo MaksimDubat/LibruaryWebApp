@@ -1,4 +1,4 @@
-﻿namespace LibruaryAPI.Application.Common
+﻿namespace LibruaryAPI.Domain.Common
 {
     /// <summary>
     /// Генерация ISBN.
@@ -22,11 +22,11 @@
             for (int i = 0; i < isbnWithoutCheckDigit.Length; i++)
             {
                 int digit = int.Parse(isbnWithoutCheckDigit[i].ToString());
-                sum += (i % 2 == 0) ? digit : digit * 3;
+                sum += i % 2 == 0 ? digit : digit * 3;
             }
 
             int remainder = sum % 10;
-            return (remainder == 0) ? 0 : 10 - remainder;
+            return remainder == 0 ? 0 : 10 - remainder;
         }
     }
 }

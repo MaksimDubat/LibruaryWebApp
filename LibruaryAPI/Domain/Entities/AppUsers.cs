@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.Common;
+﻿using LibruaryAPI.Domain.Common;
 using Microsoft.AspNetCore.Identity;
 
 namespace LibruaryAPI.Domain.Entities

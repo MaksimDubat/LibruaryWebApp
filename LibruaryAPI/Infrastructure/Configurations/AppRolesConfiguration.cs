@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Application.Common;
+﻿using LibruaryAPI.Domain.Common;
 using LibruaryAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

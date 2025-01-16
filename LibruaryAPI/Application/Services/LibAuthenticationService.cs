@@ -1,6 +1,6 @@
-﻿using LibruaryAPI.Application.Common;
-using LibruaryAPI.Application.Interfaces;
+﻿using LibruaryAPI.Domain.Common;
 using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Infrastructure.JwtSet;
 using Microsoft.AspNetCore.Authentication;
@@ -62,7 +62,6 @@ namespace LibruaryAPI.Application.Services
                 RoleId = (int)UserRole.User
             };
             await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
-            await _context.SaveChangesAsync(cancellation);
             return IdentityResult.Success;
         }
         /// <inheritdoc/>

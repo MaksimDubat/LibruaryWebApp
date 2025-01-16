@@ -1,4 +1,4 @@
-﻿namespace LibruaryAPI.Application.Common
+﻿namespace LibruaryAPI.Domain.Common
 {
     /// <summary>
     /// Перечисление для разделения ролей пользователя.

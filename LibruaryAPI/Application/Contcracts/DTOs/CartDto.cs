@@ -1,30 +1,30 @@
-﻿namespace LibruaryAPI.Domain.Entities
+﻿namespace LibruaryAPI.Application.Contcracts.DTOs
 {
     /// <summary>
-    /// Сущность корзины для хранения данных о книгах на руках пользователя.
+    /// DTO для корзины пользователя.
     /// </summary>
-    public class Cart
+    public class CartDto
     {
         /// <summary>
         /// Идентификатор корзины.
         /// </summary>
-        public int CartId { get; set; } 
+        public int CartId { get; set; }
         /// <summary>
         /// Идентификатор пользователя.
         /// </summary>
         public int UserId { get; set; }
         /// <summary>
-        /// Связь с пользователем.
+        /// Имя пользователя.
         /// </summary>
-        public required AppUsers User { get; set; }
+        public string UserName { get; set; }
         /// <summary>
-        /// Идентификатор книги.
+        /// Идентификатор книги
         /// </summary>
         public int BookId { get; set; }
         /// <summary>
-        /// Связь с книгой.
+        /// Название книги.
         /// </summary>
-        public Book Book { get; set; }
+        public string BookTitle { get; set; }
         /// <summary>
         /// Дата взятия книги.
         /// </summary>
@@ -34,7 +34,7 @@
         /// </summary>
         public int StorageDays { get; set; }
         /// <summary>
-        /// Статус в корзине.
+        /// Статус корзины.
         /// </summary>
         public string CartStatus { get; set; } = "Добавлено!";
     }

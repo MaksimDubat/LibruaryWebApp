@@ -26,16 +26,9 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model, CancellationToken cancellation)
         {
-            try
-            {
-                var command = new LoginCommand(model);
-                var token = await _mediator.Send(command, cancellation);
-                return Ok(new { Token = token });
-            }
-            catch
-            {
-                return Unauthorized();
-            }
+            var command = new LoginCommand(model);
+            var token = await _mediator.Send(command, cancellation);
+            return Ok();
         }
         /// <summary>
         /// Осуществление выхода пользователя.
@@ -58,10 +51,6 @@ namespace LibruaryAPI.WebAPI.Controllers
         {
             var command = new RegisterCommand(model);
             var result = await _mediator.Send(command, cancellation);
-            if (result.Errors == null)
-            {
-                return BadRequest();
-            }
             return Ok();
         }
         /// <summary>
@@ -74,10 +63,6 @@ namespace LibruaryAPI.WebAPI.Controllers
         {
             var command = new ForgotPasswordCommand(model);
             var result = await _mediator.Send(command, cancellation);
-            if (!result)
-            {
-                return BadRequest();
-            }
             return Ok();
         }
 

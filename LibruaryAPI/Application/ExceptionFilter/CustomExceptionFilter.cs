@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LibruaryAPI.WebAPI.ExceptionFilter
+namespace LibruaryAPI.Application.ExceptionFilter
 {
     public class CustomExceptionFilter : IExceptionFilter
     {

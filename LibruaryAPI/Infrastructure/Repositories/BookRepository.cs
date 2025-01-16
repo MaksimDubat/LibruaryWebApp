@@ -1,5 +1,5 @@
-﻿using LibruaryAPI.Application.Interfaces;
-using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
@@ -86,7 +86,6 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 CartStatus = "Добавлено!"
             };
             await _context.Cart.AddAsync(cart, cancellation);
-            await _context.SaveChangesAsync(cancellation);
             return "Ok";
         }
         /// <inheritdoc/>
@@ -135,7 +134,6 @@ namespace LibruaryAPI.Infrastructure.Repositories
             book.Image = base64Image;
 
             _context.Books.Update(book);
-            await _context.SaveChangesAsync(cancellation);
             return book;
         }
     }

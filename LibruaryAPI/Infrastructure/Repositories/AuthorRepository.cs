@@ -1,5 +1,5 @@
-﻿using LibruaryAPI.Application.Interfaces;
-using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
 

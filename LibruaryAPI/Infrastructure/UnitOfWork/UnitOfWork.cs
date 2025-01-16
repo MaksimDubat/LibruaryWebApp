@@ -1,7 +1,6 @@
-﻿using LibruaryAPI.Application.Interfaces;
+﻿using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Infrastructure.Repositories;
-using LibruaryAPI.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibruaryAPI.Infrastructure.UnityOfWork

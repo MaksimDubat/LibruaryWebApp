@@ -1,6 +1,6 @@
-using LibruaryAPI.Application.Interfaces;
 using LibruaryAPI.Application.Services;
 using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Infrastructure.JwtSet;
 using Microsoft.AspNetCore.Identity;

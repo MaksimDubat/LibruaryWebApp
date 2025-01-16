@@ -1,4 +1,5 @@
 ﻿namespace LibruaryAPI.Infrastructure.Models
+
 {
     /// <summary>
     /// Модель для восстановления пароля.

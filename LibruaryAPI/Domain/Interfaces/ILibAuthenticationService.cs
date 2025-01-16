@@ -1,7 +1,7 @@
 ﻿using LibruaryAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace LibruaryAPI.Application.Interfaces
+namespace LibruaryAPI.Domain.Interfaces
 {
     /// <summary>
     /// Интерфейс сервиса аунтефикации.

@@ -1,6 +1,6 @@
 ﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
 using LibruaryAPI.Domain.Entities;
-using LibruaryAPI.Infrastructure.UnitOfWork;
+using LibruaryAPI.Domain.Interfaces;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handlers
@@ -17,7 +17,13 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         }       
         public async Task<Book> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Books.UploadImageAsync(request.BookId, request.Image, cancellationToken);    
+            var result =  await _unitOfWork.Books.UploadImageAsync(request.BookId, request.Image, cancellationToken);
+            if(result == null)
+            {
+                throw new ArgumentNullException("invalid");
+            }
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return result;
         }
     }
 }

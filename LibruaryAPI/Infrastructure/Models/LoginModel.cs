@@ -10,15 +10,11 @@ namespace LibruaryAPI.Infrastructure.Models
         /// <summary>   
         /// Е-mail.
         /// </summary>
-        [Required]
-        [EmailAddress]
         public string Email { get; set; } = default!;
 
         /// <summary>
         /// Пароль.
         /// </summary>
-        [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; } = default!;
 
         /// <summary>

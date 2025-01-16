@@ -27,18 +27,9 @@ namespace LibruaryAPI.WebAPI.Controllers
         /// <param name="cancellation"></param>
         [Authorize(Policy = ("UserOrAdminPolicy"))]
         [HttpGet("all")]
-        public  async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(CancellationToken cancellation)
+        public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
             var books = await _mediator.Send(new GetAllQuery(), cancellation);
-            if(books == null)
-            {
-                return NotFound();
-            }
             return Ok(books);
         }
         /// <summary>
@@ -50,17 +41,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpGet("get-book-by-id/{id}")]
         public async Task<ActionResult<Book>> GetBookById(int id, CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
             var query = new GetByIdQuery(id);
             var book = await _mediator.Send(query, cancellation);
-            if (book == null)
-            {
-                return NotFound();
-            }
             return Ok(book);
         }
         /// <summary>
@@ -72,17 +54,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpGet("get-by-ISBN{isbn}")]
         public async Task<ActionResult<Book>> GetBookByISBN(string isbn, CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
             var query = new GetByIsbnQuery(isbn);
-            var book = await _mediator.Send(query,cancellation);
-            if(book == null)
-            {
-                return NotFound();
-            }
+            var book = await _mediator.Send(query, cancellation);
             return Ok(book);
         }
         /// <summary>
@@ -93,15 +66,10 @@ namespace LibruaryAPI.WebAPI.Controllers
         /// <param name="cancellation"></param>
         [Authorize(Policy = ("UserOrAdminPolicy"))]
         [HttpGet("paged-books")]
-        public async Task<IActionResult> GetBooksPaged(CancellationToken cancellation, [FromQuery] int pagedNumber =1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetBooksPaged(CancellationToken cancellation, [FromQuery] int pagedNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
             var query = new GetBooksPagedQuery(pagedNumber, pageSize);
-            var book = await _mediator.Send(query, cancellation); 
+            var book = await _mediator.Send(query, cancellation);
             return Ok(book);
         }
         /// <summary>
@@ -113,13 +81,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Add-book")]
         public async Task<ActionResult<Book>> AddBook([FromBody] AddBookCommand command, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-            var result = await _mediator.Send(command,cancellation);
+            var result = await _mediator.Send(command, cancellation);
             return Ok(result);
         }
         /// <summary>
@@ -132,16 +94,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Update-book/{id}")]
         public async Task<ActionResult<Book>> UpdateBook(int id, [FromBody] UpdateBookCommand command, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var updateBook = await _mediator.Send(command, cancellation);
-            if(id != command.Id)
-            {
-                return NotFound();
-            }
             return Ok(updateBook);
         }
         /// <summary>
@@ -153,17 +106,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Delete-book/{id}")]
         public async Task<ActionResult<Book>> DeleteBook(int id, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var command = new DeleteBookCommand(id);
             var result = await _mediator.Send(command, cancellation);
-            if(id != command.Id)
-            {
-                return NotFound();
-            }
             return Ok("deleted");
         }
         /// <summary>
@@ -175,20 +119,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Confirm-Issueance")]
         public async Task<IActionResult> ConfirmIssuance([FromBody] ConfirmIssuanceCommand command, CancellationToken cancellation)
         {
-            if(command == null)
-            {
-                return BadRequest();
-            }
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var result = await _mediator.Send(command, cancellation);
-            if (!result)
-            {
-                return BadRequest();
-            }
             return Ok("Isseued");
         }
         /// <summary>
@@ -200,21 +131,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Issue")]
         public async Task<IActionResult> IssueBook([FromBody] IssueCommand command, CancellationToken cancellation)
         {
-            if (command == null)
-            {
-                return BadRequest();
-            }
-            var userId = HttpContext.GetUserId();
-            if(userId == null)
-            {
-                return Unauthorized();
-            }
             var result = await _mediator.Send(command, cancellation);
-            if(result == "issued")
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return Ok();
         }
         /// <summary>
         /// Загрузка изображения.
@@ -226,32 +144,16 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("{bookId}/upload-image")]
         public async Task<IActionResult> UploadBookImage(int bookId, [FromForm] IFormFile file, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
+            var command = new UploadImageCommand(bookId, file);
+            var book = await _mediator.Send(command, cancellation);
+            return Ok(new
             {
-                return Unauthorized();
-            }
-            if(file == null)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var command = new UploadImageCommand(bookId, file);
-                var book = await _mediator.Send(command, cancellation);
-                return Ok(new
-                {
-                    book.BookId,
-                    book.Title,
-                    book.Author,
-                    book.Description,
-                    book.Image
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+                book.BookId,
+                book.Title,
+                book.Author,
+                book.Description,
+                book.Image
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using LibruaryAPI.Application.Interfaces;
-using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibruaryAPI.Infrastructure.Repositories
@@ -18,8 +19,11 @@ namespace LibruaryAPI.Infrastructure.Repositories
         /// <inheritdoc/>
         public async Task AddAsync(T entity, CancellationToken cancellation)
         {
-            await _context.AddAsync(entity, cancellation);
-            await _context.SaveChangesAsync(cancellation);
+            if (entity == null)
+            {
+                throw new ArgumentNullException();
+            }
+            await _context.AddAsync(entity, cancellation);;
         }
         /// <inheritdoc/>
         public async Task<T> DeleteAsync(int id, CancellationToken cancellation)
@@ -30,13 +34,17 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 throw new KeyNotFoundException(nameof(entity));
             }
             _context.Remove(entity);
-            await _context.SaveChangesAsync(cancellation);
             return entity;
         }
         /// <inheritdoc/>
         public Task<List<T>> GetAllAsync(CancellationToken cancellation)
         {
-            return _context.Set<T>().ToListAsync(cancellation);
+            var result = _context.Set<T>().ToListAsync(cancellation);
+            if(result == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return result;
         }
         /// <inheritdoc/>
         public async Task<T> GetAsync(int id, CancellationToken cancellation)
@@ -68,7 +76,6 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
             _context.Update(entity);
-            await _context.SaveChangesAsync(cancellation);
         }
     }
 }

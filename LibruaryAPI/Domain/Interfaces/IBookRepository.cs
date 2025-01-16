@@ -1,7 +1,7 @@
 ﻿using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Infrastructure.DataBase;
 
-namespace LibruaryAPI.Application.Interfaces
+namespace LibruaryAPI.Domain.Interfaces
 {
     /// <summary>
     /// Интерфейс по работе с книгами.

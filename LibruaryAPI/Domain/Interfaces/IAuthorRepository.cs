@@ -1,6 +1,6 @@
 ﻿using LibruaryAPI.Domain.Entities;
 
-namespace LibruaryAPI.Application.Interfaces
+namespace LibruaryAPI.Domain.Interfaces
 {
     /// <summary>
     /// Репозиторий по работе с авторами.

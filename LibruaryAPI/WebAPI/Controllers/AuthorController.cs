@@ -30,16 +30,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Author>>> GetAllAuthros(CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if(user == null)
-            {
-                return Unauthorized();
-            }
             var authors = await _mediator.Send(new GetAllAuthorsQuery(), cancellation);
-            if (authors == null)
-            {
-                return NotFound();
-            }
             return Ok(authors);
         }
         /// <summary>
@@ -51,17 +42,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpGet("get-author-by-id/{id}")]
         public async Task<ActionResult<Author>> GetAuthorById(int id, CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
             var query = new GetAuthorByIdQuery(id);
             var author = await _mediator.Send(query, cancellation);
-            if (author == null)
-            {
-                return NotFound();
-            }
             return Ok(author);
         }
         /// <summary>
@@ -74,21 +56,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpGet("all-authors-books")]
         public async Task<IActionResult> GetAllAuthorsBooks(string firstName,  string lastName, CancellationToken cancellation)
         {
-            var user = HttpContext.GetUserId();
-            if( user == null)
-            {
-                return Unauthorized();
-            }
-            if(string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
-            {
-                return BadRequest();
-            }
             var query = new GetAuthorsBooksQuery(firstName, lastName);
             var books = await _mediator.Send(query,cancellation);
-            if (books == null)
-            {
-                return BadRequest();
-            }
             return Ok(books);
         }
         /// <summary>
@@ -101,12 +70,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [Authorize(Policy = ("UserOrAdminPolicy"))]
         [HttpGet("paged-authors")]
         public async Task<IActionResult> GetAuthorsPaged(CancellationToken cancellation, [FromQuery] int pagedNumber = 1, [FromQuery] int pageSize = 10)
-        {
-            var user = HttpContext.GetUserId();
-            if (user == null)
-            {
-                return Unauthorized();
-            }
+        {           
             var query = new GetAuthorsPagedQuery(pagedNumber, pageSize);
             var authors = await _mediator.Send(query, cancellation);
             return Ok(authors);
@@ -120,12 +84,6 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Add-author")]
         public async Task<ActionResult<Author>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var result = await _mediator.Send(command, cancellation);
             return Ok(result);
         }
@@ -139,16 +97,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Update-author/{id}")]
         public async Task<ActionResult<Author>> UpdateAuthor(int id, [FromBody] UpdateAuthorCommand command, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var updateAuthor = await _mediator.Send(command, cancellation);
-            if (id != command.Id)
-            {
-                return NotFound();
-            }
             return Ok(updateAuthor);
         }
         /// <summary>
@@ -160,17 +109,8 @@ namespace LibruaryAPI.WebAPI.Controllers
         [HttpPost("Delete-author/{id}")]
         public async Task<ActionResult<Author>> DeleteAuthor(int id, CancellationToken cancellation)
         {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
             var command = new DeleteAuthorCommand(id);
             var result = await _mediator.Send(command, cancellation);
-            if (id != command.Id)
-            {
-                return NotFound();
-            }
             return Ok("deleted");
         }
     }

@@ -1,5 +1,5 @@
 ﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
-using LibruaryAPI.Infrastructure.UnitOfWork;
+using LibruaryAPI.Domain.Interfaces;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handlers
@@ -16,7 +16,13 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         }
         public async Task<bool> Handle(ConfirmIssuanceCommand request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Books.ConfirmIssuanceAsync(request.UserId, request.BookId, cancellationToken);
+            var result =  await _unitOfWork.Books.ConfirmIssuanceAsync(request.UserId, request.BookId, cancellationToken);
+            if (!result)
+            {
+                return false;
+            }
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            return result;
         }
     }
 }

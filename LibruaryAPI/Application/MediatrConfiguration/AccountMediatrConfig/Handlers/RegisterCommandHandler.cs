@@ -1,5 +1,5 @@
-﻿using LibruaryAPI.Application.Interfaces;
-using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
+﻿using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.Models;
 using MediatR;
 
@@ -11,10 +11,12 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Hand
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegistrationModel>
     {
         private readonly ILibAuthenticationService _authenticationService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterCommandHandler(ILibAuthenticationService authenticationService)
+        public RegisterCommandHandler(ILibAuthenticationService authenticationService, IUnitOfWork unitOfWork)
         {
             _authenticationService = authenticationService;
+            _unitOfWork = unitOfWork;
         }
 
         async Task<RegistrationModel> IRequestHandler<RegisterCommand, RegistrationModel>.Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -37,6 +39,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Hand
                 return model;
             }
             model.Errors = null;
+            await _unitOfWork.CompleteAsync(cancellationToken);
             return model;
         }
     }

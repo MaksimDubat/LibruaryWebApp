@@ -6,13 +6,13 @@ using LibruaryAPI.Application.Services;
 using LibruaryAPI.Application.Validators.AuthorValidation;
 using LibruaryAPI.Application.Validators.BookValidation;
 using LibruaryAPI.Domain.Entities;
+using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using LibruaryAPI.Infrastructure.JwtSet;
 using LibruaryAPI.Infrastructure.JwtSet.Options;
 using LibruaryAPI.Infrastructure.JwtSet.Services;
 using LibruaryAPI.Infrastructure.RefreshTokenSet.Services;
 using LibruaryAPI.Infrastructure.Repositories;
-using LibruaryAPI.Infrastructure.UnitOfWork;
 using LibruaryAPI.Infrastructure.UnityOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -91,6 +91,8 @@ namespace LibruaryAPI.WebAPI.Registrations
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ILibAuthenticationService, LibAuthenticationService>();
             services.AddScoped(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
+            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
     }
 }

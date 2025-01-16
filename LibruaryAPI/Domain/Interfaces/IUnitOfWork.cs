@@ -1,7 +1,6 @@
-﻿using LibruaryAPI.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace LibruaryAPI.Infrastructure.UnitOfWork
+namespace LibruaryAPI.Domain.Interfaces
 {
     /// <summary>
     /// Интерфейс паттерна UnityOfWork

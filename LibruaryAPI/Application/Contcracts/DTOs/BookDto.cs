@@ -1,31 +1,28 @@
-﻿using LibruaryAPI.Domain.Common;
-using System.CodeDom.Compiler;
-
-namespace LibruaryAPI.Domain.Entities
+﻿namespace LibruaryAPI.Application.Contcracts.DTOs
 {
     /// <summary>
-    /// Сущность книги.
+    /// DTO для сущности Book.
     /// </summary>
-    public class Book
+    public class BookDto
     {
         /// <summary>
         /// Идентификатор книги.
         /// </summary>
         public int BookId { get; set; }
         /// <summary>
-        /// Уникальный код, генерируемый для книги.
+        /// ISBN книги.
         /// </summary>
-        public required string ISBN { get; set; } = ISBNGenerator.GenerateISBN();
+        public string ISBN { get; set; }
         /// <summary>
         /// Название книги.
         /// </summary>
-        public required string Title { get; set; }
+        public string Title { get; set; }
         /// <summary>
         /// Описание книги.
         /// </summary>
-        public required string Description { get; set; }
+        public string Description { get; set; }
         /// <summary>
-        /// Когда взяли книгу.
+        /// Дата взятия книги.
         /// </summary>
         public DateTime TakenAt { get; set; }
         /// <summary>
@@ -33,22 +30,20 @@ namespace LibruaryAPI.Domain.Entities
         /// </summary>
         public int AuthorId { get; set; }
         /// <summary>
-        /// Автор.
+        /// Имя автора.
         /// </summary>
-        public required Author Author { get; set; } 
+        public string AuthorName { get; set; }
         /// <summary>
-        /// Статус доступности.
+        /// Доступна ли книга.
         /// </summary>
-        public bool IsAvaiable { get; set; } = true;
+        public bool IsAvailable { get; set; }
         /// <summary>
         /// Изображение книги.
         /// </summary>
-        public required string Image { get; set; }
+        public string Image {  get; set; }
         /// <summary>
-        /// КОличество экземпляров.
+        /// Количество книг.
         /// </summary>
         public int Amount { get; set; }
-        
     }
 }
-

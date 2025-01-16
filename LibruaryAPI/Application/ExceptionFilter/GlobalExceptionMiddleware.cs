@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System;
 
-namespace LibruaryAPI.WebAPI.ExceptionFilter
+namespace LibruaryAPI.Application.ExceptionFilter
 {
     /// <summary>
     /// Middleware для глобальной обработки исключений.
