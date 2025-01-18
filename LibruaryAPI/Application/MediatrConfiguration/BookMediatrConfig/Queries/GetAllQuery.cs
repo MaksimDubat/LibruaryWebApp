@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Domain.Entities;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries
@@ -6,7 +7,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries
     /// <summary>
     /// Получение всех книг. 
     /// </summary>
-    public class GetAllQuery : IRequest<IEnumerable<Book>>
+    public class GetAllQuery : IRequest<IEnumerable<BookDto>>
     {
     }
 }
