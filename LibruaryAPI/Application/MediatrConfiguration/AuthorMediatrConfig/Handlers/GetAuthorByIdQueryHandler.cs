@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,21 +10,23 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// <summary>
     /// Обработчик запроса на получение автора по идентификатору.
     /// </summary>
-    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, Author>
+    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetAuthorByIdQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetAuthorByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<Author> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+        public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
         {
             var author = await _unitOfWork.Authors.GetAsync(request.Id, cancellationToken);
             if (author == null)
             {
                 throw new ArgumentNullException("invalid");
             }
-            return author;
+            return _mapper.Map<AuthorDto>(author);
         }
     }
 }

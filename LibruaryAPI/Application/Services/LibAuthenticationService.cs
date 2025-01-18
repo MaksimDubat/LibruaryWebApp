@@ -38,31 +38,20 @@ namespace LibruaryAPI.Application.Services
         /// <inheritdoc/>
         public async Task<IdentityResult> RegisterAsync(string name, string email, string password, CancellationToken cancellation)
         {
-            if (await _context.Set<AppUsers>().FirstOrDefaultAsync(x => x.UserEmail == email, cancellation) != null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "Email already exists." });
-            }
-
             var user = new AppUsers
             {
+                UserName = email,
+                Email = email,
                 Name = name,
                 UserEmail = email,
                 Password = _passwordHasher.HashPassword(null, password),
                 CreatedDate = DateTime.UtcNow,
+                IsActive = true
             };
-            await _baseRepository.AddAsync(user, cancellation);
-            var savedUser = await _baseRepository.GetAsync(user.UserId, cancellation);
-            if (savedUser == null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "error while getting user" });
-            }
-            var userRole = new AppUsersRoles
-            {
-                UserId = savedUser.UserId,
-                RoleId = (int)UserRole.User
-            };
-            await _context.Set<AppUsersRoles>().AddAsync(userRole, cancellation);
+            var result = await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
             return IdentityResult.Success;
+
         }
         /// <inheritdoc/>
         public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellation)
@@ -90,7 +79,7 @@ namespace LibruaryAPI.Application.Services
             {
                 throw new UnauthorizedAccessException("Invalid email or password");
             }
-            var roles = user.GetRoles().Select(x => x.ToString()).ToList();
+            var roles = await _userManager.GetRolesAsync(user);
             var token = _jwtGenerator.GenerateToken(user, roles);
             return token;
         }

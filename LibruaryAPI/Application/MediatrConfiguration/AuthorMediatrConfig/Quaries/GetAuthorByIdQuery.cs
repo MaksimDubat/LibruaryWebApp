@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Domain.Entities;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries
@@ -6,7 +7,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quari
     /// <summary>
     /// Запрос на получение автора по идентификатору.
     /// </summary>
-    public class GetAuthorByIdQuery : IRequest<Author>
+    public class GetAuthorByIdQuery : IRequest<AuthorDto>
     {
         /// <summary>
         /// Идентификатор автора.

@@ -15,7 +15,7 @@ namespace LibruaryAPI.Domain.Entities
         /// <summary>
         /// Роль.
         /// </summary>
-        public UserRole RoleName { get; set; } = UserRole.User;
+        public string RoleName { get; set; }
         /// <summary>
         /// Пользователи.
         /// </summary>

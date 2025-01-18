@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,21 +10,23 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// <summary>
     /// Обработчик запроса на получение книги по ISBN.
     /// </summary>
-    public class GetByIsbnQueryHandler : IRequestHandler<GetByIsbnQuery, Book>
+    public class GetByIsbnQueryHandler : IRequestHandler<GetByIsbnQuery, BookDto>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetByIsbnQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetByIsbnQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<Book> Handle(GetByIsbnQuery request, CancellationToken cancellationToken)
+        public async Task<BookDto> Handle(GetByIsbnQuery request, CancellationToken cancellationToken)
         {
             var book = await _unitOfWork.Books.GetByIsbnAsync(request.ISBN, cancellationToken);
             if(book == null)
             {
                throw new KeyNotFoundException("not found");
             }
-            return book;
+            return _mapper.Map<BookDto>(book);
         }
     }
 }

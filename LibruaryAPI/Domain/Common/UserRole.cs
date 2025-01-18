@@ -8,14 +8,14 @@
         /// <summary>
         /// Администратор.
         /// </summary>
-        Admin = 0,
+        Admin,
         /// <summary>
         /// Пользователь.
         /// </summary>
-        User = 1,
+        User,
         /// <summary>
         /// Гость.
         /// </summary>
-        Guest = 2
+        Guest
     }
 }

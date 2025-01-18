@@ -27,7 +27,7 @@ namespace LibruaryAPI.Domain.Entities
         /// <summary>
         /// Роль пользователя.
         /// </summary>
-        public ICollection<AppUsersRoles> Role { get; set; } = new List<AppUsersRoles>();
+        public ICollection<AppUsersRoles> Role { get; set; }
         /// <summary>
         /// Дата создания пользователя.
         /// </summary>
@@ -40,12 +40,5 @@ namespace LibruaryAPI.Domain.Entities
         /// Корзина.
         /// </summary>
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
-        /// <summary>
-        /// Получение всех ролей пользователя.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<UserRole> GetRoles() => Role
-            .Where(x => x.Role != null)
-            .Select(x => x.Role.RoleName);
     }
 }

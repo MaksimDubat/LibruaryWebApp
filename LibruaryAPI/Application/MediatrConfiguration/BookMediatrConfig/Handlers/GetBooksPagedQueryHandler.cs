@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,18 +10,21 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// <summary>
     /// Обработчик запроса на пагинацию.
     /// </summary>
-    public class GetBooksPagedQueryHandler : IRequestHandler<GetBooksPagedQuery, IEnumerable<Book>>
+    public class GetBooksPagedQueryHandler : IRequestHandler<GetBooksPagedQuery, IEnumerable<BookDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         
-        public GetBooksPagedQueryHandler(IUnitOfWork unitOfWork)
+        public GetBooksPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Book>> Handle(GetBooksPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookDto>> Handle(GetBooksPagedQuery request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Books.GetPagedAsync(request.PageNumber, request.PageSize, cancellationToken);
+            var result = await _unitOfWork.Books.GetPagedAsync(request.PageNumber, request.PageSize, cancellationToken);
+            return _mapper.Map<IEnumerable<BookDto>>(result);
         }
     }
 }

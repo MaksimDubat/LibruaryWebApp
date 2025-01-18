@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,16 +10,19 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// <summary>
     /// Обработчик запроса на получение всех авторов.
     /// </summary>
-    public class GetAllAuthorsQueryHandler : IRequestHandler<GetAllAuthorsQuery, IEnumerable<Author>>
+    public class GetAllAuthorsQueryHandler : IRequestHandler<GetAllAuthorsQuery, IEnumerable<AuthorDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetAllAuthorsQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetAllAuthorsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<IEnumerable<Author>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<AuthorDto>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Authors.GetAllAsync(cancellationToken);
+            var authors = await _unitOfWork.Authors.GetAllAsync(cancellationToken);
+            return _mapper.Map<IEnumerable<AuthorDto>>(authors);
         }
     }
 }

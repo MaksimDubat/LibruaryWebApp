@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Queries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,16 +10,19 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// <summary>
     /// Обработчик запроса получения всех книг.
     /// </summary>
-    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<Book>>
+    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<BookDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetAllQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetAllQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<IEnumerable<Book>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Books.GetAllAsync(cancellationToken).ConfigureAwait(false);
+            var result = await _unitOfWork.Books.GetAllAsync(cancellationToken).ConfigureAwait(false);
+            return _mapper.Map<IEnumerable<BookDto>>(result); 
         }
     }
 }

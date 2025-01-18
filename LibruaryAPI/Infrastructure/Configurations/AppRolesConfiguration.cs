@@ -15,13 +15,7 @@ namespace LibruaryAPI.Infrastructure.Configurations
             builder.ToTable("AppRoles");
             builder.HasKey(x => x.RoleId);
             builder.Property(x => x.RoleName)
-                .IsRequired()
-                .HasDefaultValue(UserRole.User)
-                .HasConversion(
-                    v => (int)v,
-                    v => (UserRole)v
-                );
-
+                .IsRequired();
 
             builder
                 .HasMany(x => x.User)

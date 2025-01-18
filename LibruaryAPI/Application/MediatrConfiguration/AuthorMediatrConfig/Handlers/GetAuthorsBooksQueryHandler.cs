@@ -1,4 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
+﻿using AutoMapper;
+using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Quaries;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -8,17 +10,19 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
     /// <summary>
     /// Обработчик запроса на получение книг автора.
     /// </summary>
-    public class GetAuthorsBooksQueryHandler : IRequestHandler<GetAuthorsBooksQuery, IEnumerable<Book>>
+    public class GetAuthorsBooksQueryHandler : IRequestHandler<GetAuthorsBooksQuery, IEnumerable<BookDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetAuthorsBooksQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetAuthorsBooksQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<IEnumerable<Book>> Handle(GetAuthorsBooksQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookDto>> Handle(GetAuthorsBooksQuery request, CancellationToken cancellationToken)
         {
             var result = await _unitOfWork.Authors.GetBooksByAuthorNameAsync(request.FirstName, request.LastName, cancellationToken);
-            return result;
+            return _mapper.Map<IEnumerable<BookDto>>(result);
         }
     }
 }
