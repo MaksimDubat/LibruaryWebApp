@@ -1,6 +1,6 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
+﻿using LibruaryAPI.Application.Contcracts.Models;
+using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
 using LibruaryAPI.Domain.Interfaces;
-using LibruaryAPI.Infrastructure.Models;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Handlers

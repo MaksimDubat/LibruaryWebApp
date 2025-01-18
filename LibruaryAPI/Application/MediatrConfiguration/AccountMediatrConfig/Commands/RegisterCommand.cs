@@ -1,4 +1,4 @@
-﻿using LibruaryAPI.Infrastructure.Models;
+﻿using LibruaryAPI.Application.Contcracts.Models;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands

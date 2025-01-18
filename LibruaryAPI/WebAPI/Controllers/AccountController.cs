@@ -1,5 +1,5 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
-using LibruaryAPI.Infrastructure.Models;
+﻿using LibruaryAPI.Application.Contcracts.Models;
+using LibruaryAPI.Application.MediatrConfiguration.AccountMediatrConfig.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

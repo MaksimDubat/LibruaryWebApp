@@ -2,12 +2,12 @@
 using LibruaryAPI.Application.Contcracts.DTOs;
 using LibruaryAPI.Domain.Entities;
 
-namespace LibruaryAPI.Infrastructure.Mappings
+namespace LibruaryAPI.Application.Mappings
 {
     /// <summary>
     /// Профиль для маппинга сущности Book.
     /// </summary>
-    public class BookProfile : Profile 
+    public class BookProfile : Profile
     {
         public BookProfile()
         {

@@ -1,4 +1,4 @@
-﻿namespace LibruaryAPI.Infrastructure.Models
+﻿namespace LibruaryAPI.Application.Contcracts.Models
 
 {
     /// <summary>

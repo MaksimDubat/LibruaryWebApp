@@ -2,7 +2,7 @@
 using LibruaryAPI.Application.Contcracts.DTOs;
 using LibruaryAPI.Domain.Entities;
 
-namespace LibruaryAPI.Infrastructure.Mappings
+namespace LibruaryAPI.Application.Mappings
 {
     /// <summary>
     /// Профиль для маппинга сущности Author.
