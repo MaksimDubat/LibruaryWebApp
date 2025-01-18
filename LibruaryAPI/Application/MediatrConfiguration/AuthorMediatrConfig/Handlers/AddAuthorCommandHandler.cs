@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
+﻿using AutoMapper;
+using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
 using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using MediatR;
@@ -6,27 +7,33 @@ using MediatR;
 namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handlers
 {
     /// <summary>
-    /// Обработчик команды добавления автора
+    /// Обработчик команды добавления автора.
     /// </summary>
-    public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand, Author>
+    public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand, string>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AddAuthorCommandHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public AddAuthorCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<Author> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddAuthorCommand request, CancellationToken cancellation)
         {
-            var author = new Author 
+            var exist = await _unitOfWork.Authors.AnyAsync(
+                x => x.FirstName == request.Author.FirstName && 
+                x.LastName == request.Author.LastName &&
+                x.Country == request.Author.Country &&
+                x.BirthDate == request.Author.BirthDate,
+                cancellation);  
+            if (exist)
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Country = request.Country,
-                BirthDate = request.BirthDate
-            };   
-            await _unitOfWork.Authors.AddAsync(author, cancellationToken);
-            await _unitOfWork.CompleteAsync(cancellationToken);
-            return author;
+                return "Already exist";
+            }
+            var author = _mapper.Map<Author>(request.Author);
+            await _unitOfWork.Authors.AddAsync(author, cancellation);
+            await _unitOfWork.CompleteAsync(cancellation);
+            return "ok";
         }
     }
 }

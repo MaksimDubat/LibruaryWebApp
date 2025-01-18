@@ -6,10 +6,6 @@
     public class BookDto
     {
         /// <summary>
-        /// Идентификатор книги.
-        /// </summary>
-        public int BookId { get; set; }
-        /// <summary>
         /// ISBN книги.
         /// </summary>
         public string ISBN { get; set; }
@@ -21,10 +17,6 @@
         /// Описание книги.
         /// </summary>
         public string Description { get; set; }
-        /// <summary>
-        /// Дата взятия книги.
-        /// </summary>
-        public DateTime TakenAt { get; set; }
         /// <summary>
         /// Идентификатор автора.
         /// </summary>

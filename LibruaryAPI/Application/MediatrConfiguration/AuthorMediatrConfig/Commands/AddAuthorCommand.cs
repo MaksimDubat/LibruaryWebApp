@@ -1,35 +1,21 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Domain.Entities;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands
 {
     /// <summary>
-    /// МОдель команды добавления автора.
+    /// Модель команды добавления автора.
     /// </summary>
-    public class AddAuthorCommand : IRequest<Author>
+    public class AddAuthorCommand : IRequest<string>
     {
         /// <summary>
-        /// Имя автора.
+        /// Автор.
         /// </summary>
-        public string FirstName { get; set; }
-        /// <summary>
-        /// Фамилия автора.
-        /// </summary>
-        public string LastName { get; set; }
-        /// <summary>
-        /// Страна автора.
-        /// </summary>
-        public string Country { get; set; }
-        /// <summary>
-        /// Дата рождения автора.
-        /// </summary>
-        public DateTime BirthDate { get; set; }
-        public AddAuthorCommand(string firstName, string lastName, string country, DateTime birthDate)
+        public AuthorDto Author { get; set; }
+        public AddAuthorCommand(AuthorDto author)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Country = country;
-            BirthDate = birthDate;
+            Author = author;
         }
     }
 }

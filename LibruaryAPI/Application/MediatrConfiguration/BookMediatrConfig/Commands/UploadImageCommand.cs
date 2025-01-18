@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibruaryAPI.Application.Contcracts.DTOs;
+using LibruaryAPI.Domain.Entities;
 using MediatR;
 
 namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands
@@ -6,7 +7,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Command
     /// <summary>
     /// Команда добавления изображения.
     /// </summary>
-    public class UploadImageCommand : IRequest<Book>
+    public class UploadImageCommand : IRequest<string>
     {
         /// <summary>
         /// Идентификатор книги.

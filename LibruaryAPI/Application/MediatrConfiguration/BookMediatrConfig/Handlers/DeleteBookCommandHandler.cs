@@ -16,6 +16,11 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         }
         public async Task<string> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
+            var exist = await _unitOfWork.Books.AnyAsync(x => x.BookId == request.Id, cancellationToken);
+            if (!exist)
+            {
+                return "Not Found";
+            }
             await _unitOfWork.Books.DeleteAsync(request.Id, cancellationToken);
             await _unitOfWork.CompleteAsync(cancellationToken);
             return $"{request.Id} was deleted";

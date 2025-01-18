@@ -1,4 +1,6 @@
 ﻿using LibruaryAPI.Domain.Entities;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace LibruaryAPI.Domain.Interfaces
 {
@@ -43,6 +45,12 @@ namespace LibruaryAPI.Domain.Interfaces
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="cancellationToken"></param>
-        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
+        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellation);
+        /// <summary>
+        /// Проверка наличия уже существующих записей.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="cancellation"></param>
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellation);
     }
 }

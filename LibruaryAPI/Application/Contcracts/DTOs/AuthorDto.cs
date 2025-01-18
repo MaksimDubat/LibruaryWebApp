@@ -6,10 +6,6 @@
     public class AuthorDto
     {
         /// <summary>
-        /// Идентфикатор автора.
-        /// </summary>
-        public int AuthorId { get; set; }
-        /// <summary>
         /// Имя автора.
         /// </summary>
         public string FirstName { get; set; }
@@ -28,6 +24,6 @@
         /// <summary>
         /// Книги, написаные автором.
         /// </summary>
-        public List<string> BookTitles { get; set; } = new();
+        public List<string> BookTitles { get; set; }
     }
 }

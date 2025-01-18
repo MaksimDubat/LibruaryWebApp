@@ -16,6 +16,11 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
         }
         public async Task<string> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
+            var exist = await _unitOfWork.Authors.AnyAsync(x => x.AuthorId == request.Id, cancellationToken);
+            if (!exist)
+            {
+                return "NotFound";
+            }
             await _unitOfWork.Authors.DeleteAsync(request.Id, cancellationToken);
             await _unitOfWork.CompleteAsync(cancellationToken);
             return $"author with {request.Id} was deleted";

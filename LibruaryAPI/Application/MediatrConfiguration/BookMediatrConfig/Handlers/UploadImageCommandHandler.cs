@@ -8,14 +8,14 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
     /// <summary>
     /// Обработчик команды добавления изображения.
     /// </summary>
-    public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Book>
+    public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, string>
     {
         private readonly IUnitOfWork _unitOfWork;
         public UploadImageCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }       
-        public async Task<Book> Handle(UploadImageCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
             var result =  await _unitOfWork.Books.UploadImageAsync(request.BookId, request.Image, cancellationToken);
             if(result == null)
@@ -23,7 +23,7 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
                 throw new ArgumentNullException("invalid");
             }
             await _unitOfWork.CompleteAsync(cancellationToken);
-            return result;
+            return "Done";
         }
     }
 }

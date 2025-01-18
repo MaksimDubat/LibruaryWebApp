@@ -38,7 +38,7 @@ namespace LibruaryAPI.Application.Services
         /// <inheritdoc/>
         public async Task<IdentityResult> RegisterAsync(string name, string email, string password, CancellationToken cancellation)
         {
-            if (await _context.Set<AppUsers>(email).FirstOrDefaultAsync(x => x.UserEmail == email, cancellation) != null)
+            if (await _context.Set<AppUsers>().FirstOrDefaultAsync(x => x.UserEmail == email, cancellation) != null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "Email already exists." });
             }
