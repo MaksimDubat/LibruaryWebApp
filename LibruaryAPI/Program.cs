@@ -1,6 +1,6 @@
 using LibruaryAPI.Application.ExceptionFilter;
 using LibruaryAPI.Infrastructure.DataBase;
-using LibruaryAPI.WebAPI.Registrations;
+using LibruaryAPI.Registrations;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibruaryAPI
