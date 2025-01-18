@@ -146,14 +146,7 @@ namespace LibruaryAPI.WebAPI.Controllers
         {
             var command = new UploadImageCommand(bookId, file);
             var book = await _mediator.Send(command, cancellation);
-            return Ok(new
-            {
-                book.BookId,
-                book.Title,
-                book.Author,
-                book.Description,
-                book.Image
-            });
+            return Ok();
         }
     }
 }
