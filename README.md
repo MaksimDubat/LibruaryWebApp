@@ -20,6 +20,9 @@ cd LibruaryWebApp
    Создание контейнера БД.
    docker run -d -p 5432:5432 --name lib-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=admin -e PGDATA=/var/lib/postgresql/data/pgdata -v /var/lib/postgres:/var/lib/postgresql/data postgres:17
 
+   Создание контейнера с использованием --mount type=tmpfs. Это обеспечит хранение данных исключительно в оперативной памяти, а при остановке или удалении контейнера данные будут потеряны.
+   docker run -d -p 5432:5432 --name lib-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=admin -e PGDATA=/var/lib/postgresql/data/pgdata --mount type=tmpfs,destination=/var/lib/postgresql/data postgres:17
+
 Настройка appsettings.json:
 "ConnectionStrings": {
 "DefaultConnection": "Host=localhost;Port=5432;Database=postgres;Username=admin;Password=password"
@@ -50,3 +53,7 @@ dotnet ef database update
 dotnet run
 Обновление БД:
 dotnet ef database update
+Проверка, что все проекты добавлены в решение:
+dotnet sln list
+Проверка, что необходимые NuGet-пакеты установлены:
+dotnet restore
