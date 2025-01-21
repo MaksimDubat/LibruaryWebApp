@@ -53,7 +53,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="lastName"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("{firstName}/{lastName}/books")]
+        [HttpGet("author-books")]
         public async Task<IActionResult> GetAllAuthorsBooks(string firstName, string lastName, CancellationToken cancellation)
         {
             var query = new GetAuthorsBooksQuery(firstName, lastName);
