@@ -58,7 +58,7 @@ namespace LibruaryAPI.Controllers
         /// </summary>
         /// <param name="model"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpPost("ForgotPassword")]
+        [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] PasswordResetModel model, CancellationToken cancellation)
         {
             var command = new ForgotPasswordCommand(model);

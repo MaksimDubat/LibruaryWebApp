@@ -22,6 +22,10 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
         public async Task<IEnumerable<AuthorDto>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
         {
             var authors = await _unitOfWork.Authors.GetAllAsync(cancellationToken);
+            if (authors == null)
+            {
+                throw new ArgumentNullException();
+            }
             return _mapper.Map<IEnumerable<AuthorDto>>(authors);
         }
     }

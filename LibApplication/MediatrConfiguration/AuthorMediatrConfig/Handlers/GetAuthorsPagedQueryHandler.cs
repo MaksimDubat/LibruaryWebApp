@@ -25,6 +25,10 @@ namespace LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Handl
         public async Task<IEnumerable<AuthorDto>> Handle(GetAuthorsPagedQuery request, CancellationToken cancellationToken)
         {
             var result = await _unitOfWork.Authors.GetPagedAsync(PageNumber, PageSize, cancellationToken);
+            if(result == null)
+            {
+                throw new ArgumentNullException();
+            }
             return _mapper.Map<IEnumerable<AuthorDto>>(result); 
         }
     }

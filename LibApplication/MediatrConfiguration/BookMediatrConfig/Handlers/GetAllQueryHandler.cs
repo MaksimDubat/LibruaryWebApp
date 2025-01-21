@@ -22,6 +22,10 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         public async Task<IEnumerable<BookDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             var result = await _unitOfWork.Books.GetAllAsync(cancellationToken).ConfigureAwait(false);
+            if(result == null)
+            {
+                throw new ArgumentNullException();
+            }
             return _mapper.Map<IEnumerable<BookDto>>(result); 
         }
     }

@@ -16,7 +16,11 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         }
         public async Task<string> Handle(IssueCommand request, CancellationToken cancellationToken)
         {
-            await _unitOfWork.Books.IssueAsync(request.UserId, request.BookId, cancellationToken);
+            var result = await _unitOfWork.Books.IssueAsync(request.UserId, request.BookId, cancellationToken);
+            if (result == null)
+            {
+                throw new ArgumentNullException();
+            }
             await _unitOfWork.CompleteAsync(cancellationToken);
             return "issued";
         }

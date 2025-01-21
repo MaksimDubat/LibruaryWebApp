@@ -14,7 +14,7 @@ namespace LibruaryAPI.Controllers
     /// Контроллер по работе с авторами.
     /// </summary>
     [ApiController]
-    [Route("api/authors")]
+    [Route("api/authors-managment")]
     public class AuthorController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -27,7 +27,7 @@ namespace LibruaryAPI.Controllers
         /// </summary>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("all")]
+        [HttpGet("authors")]
         public async Task<ActionResult<IEnumerable<Author>>> GetAllAuthros(CancellationToken cancellation)
         {
             var authors = await _mediator.Send(new GetAllAuthorsQuery(), cancellation);
@@ -39,7 +39,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="id"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpGet("get-author-by-id/{id}")]
+        [HttpGet("author/{id}")]
         public async Task<ActionResult<Author>> GetAuthorById(int id, CancellationToken cancellation)
         {
             var query = new GetAuthorByIdQuery(id);
@@ -53,7 +53,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="lastName"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("all-authors-books")]
+        [HttpGet("{firstName}/{lastName}/books")]
         public async Task<IActionResult> GetAllAuthorsBooks(string firstName, string lastName, CancellationToken cancellation)
         {
             var query = new GetAuthorsBooksQuery(firstName, lastName);
@@ -68,7 +68,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("paged-authors")]
+        [HttpGet("paged")]
         public async Task<IActionResult> GetAuthorsPaged(CancellationToken cancellation, [FromQuery] int pagedNumber = 1, [FromQuery] int pageSize = 10)
         {
             var query = new GetAuthorsPagedQuery(pagedNumber, pageSize);
@@ -81,7 +81,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Add-author")]
+        [HttpPost]
         public async Task<ActionResult<Author>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken cancellation)
         {
             var result = await _mediator.Send(command, cancellation);
@@ -94,7 +94,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Update-author/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Author>> UpdateAuthor(int id, [FromBody] UpdateAuthorCommand command, CancellationToken cancellation)
         {
             var updateAuthor = await _mediator.Send(command, cancellation);
@@ -106,7 +106,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="id"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Delete-author/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Author>> DeleteAuthor(int id, CancellationToken cancellation)
         {
             var command = new DeleteAuthorCommand(id);

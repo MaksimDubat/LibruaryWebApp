@@ -24,6 +24,10 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         public async Task<IEnumerable<BookDto>> Handle(GetBooksPagedQuery request, CancellationToken cancellationToken)
         {
             var result = await _unitOfWork.Books.GetPagedAsync(request.PageNumber, request.PageSize, cancellationToken);
+            if(result == null)
+            {
+                throw new ArgumentNullException();
+            }
             return _mapper.Map<IEnumerable<BookDto>>(result);
         }
     }

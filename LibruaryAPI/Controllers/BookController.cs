@@ -13,7 +13,7 @@ namespace LibruaryAPI.Controllers
     /// Контроллер по работе с книгами.
     /// </summary>
     [ApiController]
-    [Route("api/books")]
+    [Route("api/books-managment")]
     public class BookController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -26,7 +26,7 @@ namespace LibruaryAPI.Controllers
         /// </summary>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("all")]
+        [HttpGet("books")]
         public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks(CancellationToken cancellation)
         {
             var books = await _mediator.Send(new GetAllQuery(), cancellation);
@@ -38,7 +38,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="id"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpGet("get-book-by-id/{id}")]
+        [HttpGet("book/{id}")]
         public async Task<ActionResult<Book>> GetBookById(int id, CancellationToken cancellation)
         {
             var query = new GetByIdQuery(id);
@@ -51,7 +51,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="isbn"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("get-by-ISBN{isbn}")]
+        [HttpGet("isbn/{isbn}")]
         public async Task<ActionResult<Book>> GetBookByISBN(string isbn, CancellationToken cancellation)
         {
             var query = new GetByIsbnQuery(isbn);
@@ -65,7 +65,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="pageSize"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpGet("paged-books")]
+        [HttpGet("paged")]
         public async Task<IActionResult> GetBooksPaged(CancellationToken cancellation, [FromQuery] int pagedNumber = 1, [FromQuery] int pageSize = 10)
         {
             var query = new GetBooksPagedQuery(pagedNumber, pageSize);
@@ -78,7 +78,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Add-book")]
+        [HttpPost]
         public async Task<ActionResult<Book>> AddBook([FromBody] AddBookCommand command, CancellationToken cancellation)
         {
             var result = await _mediator.Send(command, cancellation);
@@ -91,7 +91,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Update-book/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Book>> UpdateBook(int id, [FromBody] UpdateBookCommand command, CancellationToken cancellation)
         {
             var updateBook = await _mediator.Send(command, cancellation);
@@ -103,7 +103,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="id"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Delete-book/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(int id, CancellationToken cancellation)
         {
             var command = new DeleteBookCommand(id);
@@ -116,7 +116,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("Confirm-Issueance")]
+        [HttpPost("issueance/confirm")]
         public async Task<IActionResult> ConfirmIssuance([FromBody] ConfirmIssuanceCommand command, CancellationToken cancellation)
         {
             var result = await _mediator.Send(command, cancellation);
@@ -128,7 +128,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="command"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "UserOrAdminPolicy")]
-        [HttpPost("Issue")]
+        [HttpPost("issuance")]
         public async Task<IActionResult> IssueBook([FromBody] IssueCommand command, CancellationToken cancellation)
         {
             var result = await _mediator.Send(command, cancellation);
@@ -141,7 +141,7 @@ namespace LibruaryAPI.Controllers
         /// <param name="file"></param>
         /// <param name="cancellation"></param>
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost("{bookId}/upload-image")]
+        [HttpPost("{bookId}/image")]
         public async Task<IActionResult> UploadBookImage(int bookId, [FromForm] IFormFile file, CancellationToken cancellation)
         {
             var command = new UploadImageCommand(bookId, file);

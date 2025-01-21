@@ -20,6 +20,7 @@ namespace LibruaryAPI.Infrastructure.Repositories
         public async Task<IEnumerable<Book>> GetBooksByAuthorNameAsync(string firstName, string lastName, CancellationToken cancellationToken)
         {
             var books = await _context.Books
+                .AsNoTracking()
                 .Include(x => x.Author)
                 .Where(x => x.Author.FirstName == firstName && x.Author.LastName == lastName)
                 .ToListAsync(cancellationToken);

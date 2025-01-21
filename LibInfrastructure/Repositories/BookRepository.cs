@@ -26,56 +26,25 @@ namespace LibruaryAPI.Infrastructure.Repositories
         {
             var cart = await _context.Cart
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.BookId == bookId && x.CartStatus == "Добавлено!", cancellation);
-            if (cart != null)
-            {
-                return false;
-            }
             var activeCart = await _context.Cart
                 .CountAsync(x => x.UserId == userId && x.CartStatus == "Добавлено!", cancellation);
-            if (activeCart >= 5)
-            {
-                return false;
-            }
             return true;
         }
         /// <inheritdoc/>
         public async Task<Book> GetByIsbnAsync(string isbn, CancellationToken cancellation)
         {
-            if (string.IsNullOrWhiteSpace(isbn))
-            {
-                throw new ArgumentNullException(nameof(isbn));
-            }
-            var book = await _context.Books.FirstOrDefaultAsync(x => x.ISBN == isbn, cancellation);
-            if (book == null)
-            {
-                throw new ArgumentException("Not found");
-            }
-            return book;
+            return await _context.Books
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ISBN == isbn, cancellation);
         }
         /// <inheritdoc/>
         public async Task<string> IssueAsync(int userId, int bookId, CancellationToken cancellation)
         {
             var user = await _context.AppUsers
                 .FirstOrDefaultAsync(x => x.UserId == userId, cancellation);
-            if (user == null)
-            {
-                throw new ArgumentException("not found");
-            }
             var book = await _context.Books
                 .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
-            if (book == null)
-            {
-                throw new ArgumentException("not found");
-            }
-            if (!book.IsAvaiable)
-            {
-                return "Not available";
-            }
             var issue = await ConfirmIssuanceAsync(userId, bookId, cancellation);
-            if (!issue)
-            {
-                return "Not avaiable";
-            }
             var cart = new Cart
             {
                 UserId = userId,
@@ -94,25 +63,9 @@ namespace LibruaryAPI.Infrastructure.Repositories
         {
             var book = await _context.Books
                 .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
-            if (book == null)
-            {
-                throw new ArgumentException("invalid");
-            }
-            if (image == null || image.Length == 0)
-            {
-                throw new ArgumentException("invalid");
-            }
             const long maxSize = 5 * 1024 * 1024;
-            if (image.Length > maxSize)
-            {
-                throw new ArgumentException("invalid size");
-            }
             var allowedType = new[] { ".jpg", ".jpeg", ".png" };
             var type = Path.GetExtension(image.FileName).ToLower();
-            if (!allowedType.Contains(type))
-            {
-                throw new ArgumentException("invalid type");
-            }
             const int width = 300;
             const int height = 400;
 
