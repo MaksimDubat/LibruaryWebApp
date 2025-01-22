@@ -34,7 +34,7 @@ namespace LibruaryAPI.Domain.Interfaces
         /// <param name="userId"></param>
         /// <param name="bookId"></param>
         /// <param name="cancellation"></param>
-        Task<bool> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation);
+        Task<string> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation);
     }
 
 }

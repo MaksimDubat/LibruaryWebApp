@@ -1,4 +1,5 @@
-﻿using LibruaryAPI.Domain.Entities;
+﻿using LibDomain.Common;
+using LibruaryAPI.Domain.Entities;
 using LibruaryAPI.Domain.Interfaces;
 using LibruaryAPI.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,17 @@ namespace LibruaryAPI.Infrastructure.Repositories
             _context = context;
         }
         /// <inheritdoc/>
-        public async Task<bool> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation)
+        public async Task<string> ConfirmIssuanceAsync(int userId, int bookId, CancellationToken cancellation)
         {
             var cart = await _context.Cart
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.BookId == bookId && x.CartStatus == "Добавлено!", cancellation);
-            var activeCart = await _context.Cart
-                .CountAsync(x => x.UserId == userId && x.CartStatus == "Добавлено!", cancellation);
-            return true;
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.BookId == bookId && x.CartStatus == CartStatus.InProgress, cancellation);
+            var book = await _context.Books
+                .FirstOrDefaultAsync(x => x.BookId == bookId && x.Amount > 0 ,cancellation);
+            cart.CartStatus = CartStatus.Added;
+            _context.Cart.Update(cart);
+            book.Amount -= 1;
+            _context.Books.Update(book);
+            return "Book Confirmed";
         }
         /// <inheritdoc/>
         public async Task<Book> GetByIsbnAsync(string isbn, CancellationToken cancellation)
@@ -44,7 +49,6 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.UserId == userId, cancellation);
             var book = await _context.Books
                 .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
-            var issue = await ConfirmIssuanceAsync(userId, bookId, cancellation);
             var cart = new Cart
             {
                 UserId = userId,
@@ -53,10 +57,10 @@ namespace LibruaryAPI.Infrastructure.Repositories
                 User = user,
                 TakenAt = DateTime.UtcNow,
                 StorageDays = 14,
-                CartStatus = "Добавлено!"
+                CartStatus = CartStatus.InProgress,
             };
             await _context.Cart.AddAsync(cart, cancellation);
-            return "Ok";
+            return "Book reserved";
         }
         /// <inheritdoc/>
         public async Task<Book> UploadImageAsync(int bookId, IFormFile image, CancellationToken cancellation)

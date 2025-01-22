@@ -1,4 +1,6 @@
-﻿namespace LibruaryAPI.Domain.Entities
+﻿using LibDomain.Common;
+
+namespace LibruaryAPI.Domain.Entities
 {
     /// <summary>
     /// Сущность корзины для хранения данных о книгах на руках пользователя.
@@ -36,6 +38,6 @@
         /// <summary>
         /// Статус в корзине.
         /// </summary>
-        public string CartStatus { get; set; } = "Добавлено!";
+        public CartStatus CartStatus { get; set; } = CartStatus.Added;
     }
 }

@@ -17,12 +17,12 @@ namespace LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Handler
         public async Task<bool> Handle(ConfirmIssuanceCommand request, CancellationToken cancellationToken)
         {
             var result =  await _unitOfWork.Books.ConfirmIssuanceAsync(request.UserId, request.BookId, cancellationToken);
-            if (!result)
+            if (result == null)
             {
                 return false;
             }
             await _unitOfWork.CompleteAsync(cancellationToken);
-            return result;
+            return true;
         }
     }
 }
