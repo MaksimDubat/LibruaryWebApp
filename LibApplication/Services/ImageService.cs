@@ -8,6 +8,7 @@ using LibruaryAPI.Infrastructure.DataBase;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using Microsoft.EntityFrameworkCore;
+using LibruaryAPI.Domain.Interfaces;
 
 namespace LibApplication.Services
 {
@@ -16,16 +17,15 @@ namespace LibApplication.Services
     /// </summary>
     public class ImageService : IImageService
     {
-        private readonly MutableDbContext _context;
-        public ImageService(MutableDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public ImageService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
         /// <inheritdoc/>
         public async Task<Book> UploadImageAsync(int bookId, IFormFile image, CancellationToken cancellation)
         {
-            var book = await _context.Books
-                .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
+            var book = await _unitOfWork.Books.GetAsync(bookId, cancellation);
             if (book == null)
             {
                 throw new KeyNotFoundException();
@@ -33,7 +33,7 @@ namespace LibApplication.Services
             const long maxSize = 5 * 1024 * 1024;
             if(image.Length > maxSize)
             {
-                throw new InvalidOperationException();
+                throw new ArgumentException();
             }
             var allowedType = new[] { ".jpg", ".jpeg", ".png" };
             var type = Path.GetExtension(image.FileName).ToLower();
@@ -60,9 +60,9 @@ namespace LibApplication.Services
             IImageEncoder encoder = type == ".png" ? new PngEncoder() : new JpegEncoder();
             await processedImage.SaveAsync(outputStream, encoder, cancellation);
             var base64Image = Convert.ToBase64String(outputStream.ToArray());
-            book.Image = base64Image;
 
-            _context.Books.Update(book);
+            book.Image = base64Image;
+            await _unitOfWork.Books.UpdateAsync(book, cancellation);
             return book;
         }
     }
