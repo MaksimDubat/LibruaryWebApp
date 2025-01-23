@@ -62,37 +62,5 @@ namespace LibruaryAPI.Infrastructure.Repositories
             await _context.Cart.AddAsync(cart, cancellation);
             return "Book reserved";
         }
-        /// <inheritdoc/>
-        public async Task<Book> UploadImageAsync(int bookId, IFormFile image, CancellationToken cancellation)
-        {
-            var book = await _context.Books
-                .FirstOrDefaultAsync(x => x.BookId == bookId, cancellation);
-            const long maxSize = 5 * 1024 * 1024;
-            var allowedType = new[] { ".jpg", ".jpeg", ".png" };
-            var type = Path.GetExtension(image.FileName).ToLower();
-            const int width = 300;
-            const int height = 400;
-
-            using var memoryStream = new MemoryStream();
-            await image.CopyToAsync(memoryStream, cancellation);
-
-            using var imageStream = new MemoryStream(memoryStream.ToArray());
-            using var processedImage = await Image.LoadAsync(imageStream, cancellation);
-
-            processedImage.Mutate(x => x.Resize(new ResizeOptions
-            {
-                Size = new Size(width, height),
-                Mode = ResizeMode.Stretch
-            }));
-
-            using var outputStream = new MemoryStream();
-            IImageEncoder encoder = type == ".png" ? new PngEncoder() : new JpegEncoder();
-            await processedImage.SaveAsync(outputStream, encoder, cancellation);
-            var base64Image = Convert.ToBase64String(outputStream.ToArray());
-            book.Image = base64Image;
-
-            _context.Books.Update(book);
-            return book;
-        }
     }
 }

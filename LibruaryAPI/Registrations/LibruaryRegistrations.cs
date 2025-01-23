@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using LibApplication.Services;
+using LibDomain.Interfaces;
 using LibruaryAPI.Application.Interfaces;
 using LibruaryAPI.Application.MediatrConfiguration.AuthorMediatrConfig.Commands;
 using LibruaryAPI.Application.MediatrConfiguration.BookMediatrConfig.Commands;
@@ -91,6 +93,7 @@ namespace LibruaryAPI.Registrations
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ILibAuthenticationService, LibAuthenticationService>();
             services.AddScoped(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
